@@ -1,0 +1,84 @@
+{
+    "Distros": [
+        {
+            "Name": "LynkOS",
+            "Users": 100000
+        },
+        {
+            "Name": "FoxLight",
+            "Users": 50000
+        },
+        {
+            "Name": "VoidPioneer",
+            "Users": 25000
+        },
+        {
+            "Name": "IroncladLinux",
+            "Users": 15000
+        },
+        {
+            "Name": "Trumpet",
+            "Users": 1
+        },
+        {
+            "Name": "Kooboontoo",
+            "Users": 45000
+        },
+        {
+            "Name": "NimbusNet",
+            "Users": 5000
+        },
+        {
+            "Name": "Cryonix",
+            "Users": 500
+        },
+        {
+            "Name": "Nerfux",
+            "Users": 50
+        },
+        {
+            "Name": "ReduntantLinux",
+            "Users": 200
+        },
+        {
+            "Name": "ArcaneOS",
+            "Users": 8500
+        },
+        {
+            "Name": "Voltix",
+            "Users": 2500
+        },
+        {
+            "Name": "FreeHugz",
+            "Users": 900
+        },
+        {
+            "Name": "Derpnix",
+            "Users": 800
+        },
+        {
+            "Name": "Unpronounceable",
+            "Users": 1500
+        },
+        {
+            "Name": "Lozenge",
+            "Users": 4200
+        },
+        {
+            "Name": "Gat3way",
+            "Users": 3350
+        },
+        {
+            "Name": "Prune",
+            "Users": 810
+        },
+        {
+            "Name": "ChakaLaka",
+            "Users": 2100
+        },
+        {
+            "Name": "GlitchWare",
+            "Users": 15
+        }
+    ]
+}

@@ -1,0 +1,48 @@
+{
+  "Packages": {
+    "OkayOffice": {
+      "Name": "OkayOffice",
+      "Bugs": 2,
+      "Description": "This office suite... is pretty ok",
+      "NerdCred": 10,
+      "Popularity": 10,
+      "SizeInMB": 40,
+      "Version": 1,
+      "isOpenSource": true,
+      "TypeOfSoftware": "Office"
+    },
+    "CityLimits": {
+      "Name": "CityLimits",
+      "Bugs": 2,
+      "Description": "Design and run a very fancy city.",
+      "NerdCred": 3,
+      "Popularity": 15,
+      "SizeInMB": 120,
+      "Version": 1,
+      "isOpenSource": true,
+      "TypeOfSoftware": "Game"
+    },
+    "JustCards": {
+      "Name": "JustCards",
+      "Bugs": 1,
+      "Description": "Just a card game.",
+      "NerdCred": 0,
+      "Popularity": 5,
+      "SizeInMB": 20,
+      "Version": 1,
+      "isOpenSource": true,
+      "TypeOfSoftware": "Game"
+    },
+    "PainterMcPaint": {
+      "Name": "PainterMcPaint",
+      "Bugs": 1,
+      "Description": "Good for painting.  Bad for anything else.",
+      "NerdCred": 0,
+      "Popularity": 3,
+      "SizeInMB": 150,
+      "Version": 1,
+      "isOpenSource": true,
+      "TypeOfSoftware": "Graphics"
+    }
+  }
+}

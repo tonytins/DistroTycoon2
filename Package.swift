@@ -5,12 +5,13 @@ import PackageDescription
 
 let package = Package(
     name: "DistroTycoon",
-    platforms: [.macOS(.v13)],
+    platforms: [.macOS(.v26)],
     products: [
         .executable(name: "distrotycoon", targets: ["DistroTycoon"]),
     ],
     dependencies: [
         .package(url: "https://github.com/migueldeicaza/TermKit.git", branch: "main"),
+        .package(url: "https://github.com/elegantchaos/Versionator.git", from: "2.0.0"),
     ],
     targets: [
         // Targets are the basic building blocks of a package, defining a module or a test suite.
@@ -18,6 +19,9 @@ let package = Package(
         .executableTarget(
             name: "DistroTycoon",
             dependencies: [.product(name: "TermKit", package: "TermKit")],
+            plugins: [
+                .plugin(name: "VersionatorPlugin", package: "Versionator"),
+            ],
         ),
         .testTarget(
             name: "DistroTycoonTests",

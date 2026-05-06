@@ -1,5 +1,5 @@
 {
-  "originHash" : "6acfc58755c27e1d65c50fad727fde053ec92ecd8ef87782a1fdc85423fade90",
+  "originHash" : "d217397b3233527884129904c6ee455af391b39ca4a73dfeff5cb39b29c83482",
   "pins" : [
     {
       "identity" : "swift-argument-parser",
@@ -38,6 +38,24 @@
       }
     },
     {
+      "identity" : "swift-subprocess",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/swiftlang/swift-subprocess.git",
+      "state" : {
+        "revision" : "13d087685b95d64d6aac9b94500d347bbe84c39b",
+        "version" : "0.4.0"
+      }
+    },
+    {
+      "identity" : "swift-system",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/apple/swift-system",
+      "state" : {
+        "revision" : "7c6ad0fc39d0763e0b699210e4124afd5041c5df",
+        "version" : "1.6.4"
+      }
+    },
+    {
       "identity" : "swiftterm",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/migueldeicaza/SwiftTerm.git",
@@ -62,6 +80,15 @@
       "state" : {
         "revision" : "7f3ed5b1d7288de34ad853544d802647be11cfcf",
         "version" : "0.3.0"
+      }
+    },
+    {
+      "identity" : "versionator",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/elegantchaos/Versionator.git",
+      "state" : {
+        "revision" : "b5f925adb48a08f33281713cb48c51a9cead21ee",
+        "version" : "2.1.1"
       }
     }
   ],

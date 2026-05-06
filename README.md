@@ -12,7 +12,7 @@ Distro Tycoon 2 (or Distro Tycoon 2000) is the spiritual successor to [Linux Tyc
 
 | Target  | Version | Code Name   |
 | ------- | ------- | ----------- |
-| macOS   | 13      | Ventura     |
+| macOS   | 26      | Tahoe     |
 | Windows | 10      | Threshold   |
 | Ubuntu  | 20.04   | Focal Fossa |
 | Debian  | 12      | Bookworm    |

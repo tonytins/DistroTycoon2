@@ -1,5 +1,5 @@
-import TermKit
 import Foundation
+import TermKit
 
 class Gameplay {
     var timeUpdate: Int = 0
@@ -8,8 +8,7 @@ class Gameplay {
     var week: Int = 0
     var year: Int = 0
 
-    func gameTime(date: Date)
-    {
+    func gameTime(date: Date) {
         let calendar = Calendar.current
 
         let hour = calendar.component(.hour, from: date)

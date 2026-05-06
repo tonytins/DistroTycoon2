@@ -8,9 +8,7 @@ import TermKit
 
 func makeNewRelease(distro: UserDistro) {
     distro.distroVersion = 1
-    // MessageBox.info("Congrats!", message: "\(distro.distroVersion).0 of \(distro.distroName) has been released! Time to sit back and relax")
-    showRandomGain()
-
+    MessageBox.info("Congrats!", message: "\(distro.distroVersion).0 of \(distro.distroName) has been released! Time to sit back and relax")
 }
 
 func nameDistro(desktop: StandardDesktop, distro: UserDistro) {
@@ -56,7 +54,11 @@ struct DistroTycoon {
         let customMenu = MenuBar(menus: [
             MenuBarItem(title: "_File", children: [
                 MenuItem(title: "_About", action: {
-                    MessageBox.info("About", message: "Distro Tycoon 0.1")
+                    let about = """
+                    Distro Tycoon
+                    Build \(VersionatorVersion.build)-\(VersionatorVersion.commit)
+                    """
+                    MessageBox.info("About", message: about)
                 }),
                 MenuItem(title: "_Quit", action: {
                     Application.requestStop()

@@ -1,6 +1,6 @@
 # Distro Tycoon 2
 
-Distro Tycoon 2 is the spiritual successor to [Linux Tycoon DOS](https://github.com/BryanLunduke/Linux-Tycoon-DOS) and is technically sequel to my fork, [Distro Tycoon Classic](https://github.com/tonytins/DistroTycoonClassic), which was used to understand the gameplay mechanics.
+Distro Tycoon 2 (or Distro Tycoon 2000) is the spiritual successor to [Linux Tycoon DOS](https://github.com/BryanLunduke/Linux-Tycoon-DOS) and is technically sequel to my fork, [Distro Tycoon Classic](https://github.com/tonytins/DistroTycoonClassic), which was used to understand the gameplay mechanics.
 
 ## Minimum Requirements
 

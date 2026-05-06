@@ -43,6 +43,171 @@
       "Version": 1,
       "isOpenSource": true,
       "TypeOfSoftware": "Graphics"
+    },
+    "Mailinator": {
+      "Name": "Mailinator",
+      "Bugs": 1,
+      "Description": "Super advanced email client",
+      "NerdCred": 0,
+      "Popularity": 12,
+      "SizeInMB": 80,
+      "Version": 1,
+      "isOpenSource": true,
+      "TypeOfSoftware": "Communication"
+    },
+    "Chatchatchat": {
+      "Name": "Chatchatchat",
+      "Bugs": 1,
+      "Description": "You know.  For chatting.",
+      "NerdCred": 0,
+      "Popularity": 5,
+      "SizeInMB": 50,
+      "Version": 1,
+      "isOpenSource": true,
+      "TypeOfSoftware": "Communication"
+    },
+    "Fir": {
+      "Name": "Fir",
+      "Bugs": 0,
+      "Description": "Terminal-only email client.",
+      "NerdCred": 5,
+      "Popularity": 1,
+      "SizeInMB": 1,
+      "Version": 1,
+      "isOpenSource": true,
+      "TypeOfSoftware": "Communication"
+    },
+    "PixelPusher": {
+      "Name": "PixelPusher",
+      "Bugs": 0,
+      "Description": "A very simple image editor.",
+      "NerdCred": 1,
+      "Popularity": 2,
+      "SizeInMB": 2,
+      "Version": 1,
+      "isOpenSource": true,
+      "TypeOfSoftware": "Graphics"
+    },
+    "The Dork": {
+      "Name": "The Dork",
+      "Bugs": 2,
+      "Description": "Robust, powerful graphics editor.",
+      "NerdCred": 5,
+      "Popularity": 12,
+      "SizeInMB": 65,
+      "Version": 1,
+      "isOpenSource": true,
+      "TypeOfSoftware": "Graphics"
+    },
+    "Pictures-In-Folders": {
+      "Name": "Pictures-In-Folders",
+      "Bugs": 0,
+      "Description": "A simple photo gallery for organizing images.",
+      "NerdCred": 0,
+      "Popularity": 8,
+      "SizeInMB": 8,
+      "Version": 1,
+      "isOpenSource": true,
+      "TypeOfSoftware": "Graphics"
+    },
+    "LunarBlackout": {
+      "Name": "LunarBlackout",
+      "Bugs": 4,
+      "Description": "A good, flexible integrated development environment.",
+      "NerdCred": 10,
+      "Popularity": 4,
+      "SizeInMB": 120,
+      "Version": 1,
+      "isOpenSource": true,
+      "TypeOfSoftware": "Programming"
+    },
+    "JustPascal": {
+      "Name": "JustPascal",
+      "Bugs": 0,
+      "Description": "Pascal compiler.",
+      "NerdCred": 11,
+      "Popularity": 1,
+      "SizeInMB": 40,
+      "Version": 1,
+      "isOpenSource": true,
+      "TypeOfSoftware": "Programming"
+    },
+    "Lunduke Development Kit": {
+      "Name": "Lunduke Development Kit",
+      "Bugs": 0,
+      "Description": "The most awesome programming language.  Ever.",
+      "NerdCred": 15,
+      "Popularity": 15,
+      "SizeInMB": 10,
+      "Version": 1,
+      "isOpenSource": true,
+      "TypeOfSoftware": "Programming"
+    },
+    "QDE": {
+      "Name": "QDE",
+      "Bugs": 3,
+      "Description": "The Q Desktop Environment.  Lots of widgets.",
+      "NerdCred": 3,
+      "Popularity": 10,
+      "SizeInMB": 50,
+      "Version": 1,
+      "isOpenSource": true,
+      "TypeOfSoftware": "DesktopEnvironment"
+    },
+    "UCDE": {
+      "Name": "UCDE",
+      "Bugs": 0,
+      "Description": "The Ultra Confusing Desktop Environment",
+      "NerdCred": 20,
+      "Popularity": 1,
+      "SizeInMB": 1,
+      "Version": 1,
+      "isOpenSource": true,
+      "TypeOfSoftware": "DesktopEnvironment"
+    },
+    "START": {
+      "Name": "START",
+      "Bugs": 2,
+      "Description": "The Start Desktop Environment",
+      "NerdCred": 1,
+      "Popularity": 1,
+      "SizeInMB": 2,
+      "Version": 1,
+      "isOpenSource": true,
+      "TypeOfSoftware": "DesktopEnvironment"
+    },
+    "FlamingRodent": {
+      "Name": "FlamingRodent",
+      "Bugs": 4,
+      "Description": "A big, powerful web browser",
+      "NerdCred": 3,
+      "Popularity": 15,
+      "SizeInMB": 10,
+      "Version": 1,
+      "isOpenSource": true,
+      "TypeOfSoftware": "WebBrowser"
+    },
+    "ShmoogleShrome": {
+      "Name": "ShmoogleShrome",
+      "Bugs": 2,
+      "Description": "Lightweight and superfast browser",
+      "NerdCred": 3,
+      "Popularity": 10,
+      "SizeInMB": 10,
+      "Version": 1,
+      "isOpenSource": true,
+      "TypeOfSoftware": "WebBrowser"
+    },
+    "Text-O-Web": {
+      "Name": "Text-O-Web",
+      "Bugs": 0,
+      "Description": "A text only web browser that runs in the terminal",
+      "NerdCred": 20,
+      "Popularity": 0,
+      "SizeInMB": 1,
+      "Version": 1,
+      "isOpenSource": true,
+      "TypeOfSoftware": "WebBrowser"
     }
   }
 }

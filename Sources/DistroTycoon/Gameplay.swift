@@ -32,6 +32,12 @@ class UserDistro {
     func updateHype(hype: Int) {
         self.hype += hype
     }
+
+    /// Releases the first version and returns the message to show the player.
+    func makeNewRelease() -> String {
+        distroVersion = 1
+        return "\(distroVersion).0 of \(distroName) has been released! Time to sit back and relax"
+    }
 }
 
 /// Rolls for a random event, applies it to `distro`, and returns the message to show the player, if any.

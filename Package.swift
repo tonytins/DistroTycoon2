@@ -23,6 +23,9 @@ let package = Package(
                 .product(name: "Hudini", package: "Hudini"),
                 .product(name: "GitVersion", package: "GitVersion"),
             ],
+            resources: [
+                .copy("Resources/createdistro.xml"),
+            ],
             plugins: [
                 .plugin(name: "GitVersionPlugin", package: "GitVersion"),
             ],
@@ -31,6 +34,7 @@ let package = Package(
             name: "DistroTycoonTests",
             dependencies: [
                 "DistroTycoon",
+                .product(name: "Hudini", package: "Hudini"),
                 .product(name: "Raylib", package: "raylib-swift"),
             ],
         ),

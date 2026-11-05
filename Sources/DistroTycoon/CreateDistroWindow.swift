@@ -7,18 +7,19 @@ final class CreateDistroWindow {
     private static let nameField = "distroName"
     private static let submitButton = "submit"
 
-    private let frame = WindowFrame(title: "Create your Distro", theme: Palette.theme)
+    private let frame: WindowFrame
     private let view: UIScriptView
     private let size: Vector2
 
     /// Reads the window's layout, and reports a document that can't be read or lacks a control the
     /// game needs.
-    init() throws {
+    init(appearance: Appearance = .standard) throws {
         let script = try Resources.loadScript(named: "createdistro")
         guard script.control(named: Self.nameField)?.type == .textField, script.control(named: Self.submitButton)?.type == .button else {
             throw ResourceError.missingControl(document: "createdistro")
         }
-        view = UIScriptView(script: script, theme: Palette.theme)
+        frame = WindowFrame(title: "Create your Distro", theme: appearance.interface)
+        view = UIScriptView(script: script, theme: appearance.interface)
         size = Vector2(x: script.window.size.width, y: script.window.size.height + Float(WindowFrame.titleHeight))
         frame.showsCloseButton = false
     }

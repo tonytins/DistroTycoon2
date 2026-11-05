@@ -4,6 +4,7 @@ import Raylib
 /// Something the player can ask for from the menu bar.
 enum MenuCommand: Equatable {
     case about
+    case release
     case quit
 }
 
@@ -14,10 +15,10 @@ struct MenuItem {
     let command: MenuCommand
 }
 
-/// A drop-down menu. Alt and `hotkey` open it from the keyboard.
+/// A drop-down menu. Alt and `hotkey` open it from the keyboard, when it has one.
 struct Menu {
     let title: String
-    let hotkey: Character
+    let hotkey: Character?
     let items: [MenuItem]
 }
 
@@ -68,7 +69,7 @@ extension MenuInput.Key {
     }
 }
 
-/// The global menu along the top of the window.
+/// The global menu along the top of the window. Its first menu is the system menu, drawn in bold.
 final class MenuBar {
     static let height = 28
 
@@ -76,11 +77,16 @@ final class MenuBar {
     private static let titlePadding = 10
     private static let itemHeight = 28
     private static let itemPadding = 12
+    private static let statusPadding = 12
 
-    private let menus: [Menu]
+    private let appearance: Appearance
     private let measure: (String) -> Int
 
+    private var menus: [Menu]
     private var lastMouse: Vector2?
+
+    /// Text at the bar's right end, left out when the window is too narrow to fit it.
+    var status = ""
 
     /// The open menu's index, or `nil` when every menu is closed.
     private(set) var openMenu: Int?
@@ -92,9 +98,20 @@ final class MenuBar {
     private(set) var tookInput = false
 
     /// Creates a bar. `measure` gives a label's width in pixels, by default at the bar's font size.
-    init(menus: [Menu], measure: @escaping (String) -> Int = { MeasureText($0, MenuBar.fontSize) }) {
+    init(
+        menus: [Menu],
+        appearance: Appearance = .standard,
+        measure: @escaping (String) -> Int = { MeasureText($0, MenuBar.fontSize) }
+    ) {
         self.menus = menus
+        self.appearance = appearance
         self.measure = measure
+    }
+
+    /// Replaces the menus, such as when another app takes focus, and closes any open one.
+    func setMenus(_ menus: [Menu]) {
+        self.menus = menus
+        close()
     }
 
     /// Handles a frame's input and returns the command the player chose, if any.
@@ -114,16 +131,25 @@ final class MenuBar {
 
     /// Draws the bar. Draw it after the desktop's windows so that an open menu sits on top of them.
     func draw() {
-        let width = Float(GetScreenWidth())
-        DrawRectangleRec(Rectangle(x: 0, y: 0, width: width, height: Float(Self.height)), Palette.lightGray)
+        let width = Int(GetScreenWidth())
+        DrawRectangleGradientV(0, 0, width, Self.height, appearance.barTop, appearance.barBottom)
+        DrawLine(0, Self.height, width, Self.height, appearance.barEdge)
         for index in menus.indices {
             let bounds = titleBounds(index)
             let isOpen = openMenu == index
             if isOpen {
-                DrawRectangleRec(bounds, Palette.navy)
+                DrawRectangleRec(bounds, appearance.highlight)
             }
-            drawLabel(menus[index].title, hotkey: menus[index].hotkey, x: Int(bounds.x) + Self.titlePadding, y: 4, color: isOpen ? Palette.white : Palette.black)
+            drawLabel(
+                menus[index].title,
+                hotkey: menus[index].hotkey,
+                x: Int(bounds.x) + Self.titlePadding,
+                y: 4,
+                color: isOpen ? appearance.highlightText : appearance.text,
+                isBold: index == 0
+            )
         }
+        drawStatus(barWidth: width)
         if let openMenu {
             drawDropDown(openMenu)
         }
@@ -131,7 +157,7 @@ final class MenuBar {
 
     private func handleKeys(_ input: MenuInput) -> MenuCommand? {
         for key in input.keys {
-            if input.isAltHeld, case let .letter(letter) = key, let index = menus.firstIndex(where: { Self.matches($0.hotkey, letter) }) {
+            if input.isAltHeld, case let .letter(letter) = key, let index = menus.firstIndex(where: { $0.hotkey.map { Self.matches($0, letter) } ?? false }) {
                 open(index, highlighting: 0)
             } else if let openMenu, let command = handleKey(key, in: openMenu) {
                 return command
@@ -252,24 +278,43 @@ final class MenuBar {
         menus[menu].items.indices.first { CheckCollisionPointRec(point, itemBounds($0, in: menu)) }
     }
 
+    private func drawStatus(barWidth: Int) {
+        let menusEnd = menus.indices.last.map { Int(titleBounds($0).x + titleBounds($0).width) } ?? 0
+        let x = barWidth - measure(status) - Self.statusPadding
+        guard !status.isEmpty, x > menusEnd else {
+            return
+        }
+        DrawText(status, x, 4, Self.fontSize, appearance.text)
+    }
+
     private func drawDropDown(_ menu: Int) {
         let list = dropDownBounds(menu)
-        DrawRectangleRec(list, Palette.lightGray)
+        DrawRectangleRec(list, appearance.barTop)
         for (index, item) in menus[menu].items.enumerated() {
             let bounds = itemBounds(index, in: menu)
             let isHighlighted = highlightedItem == index
             if isHighlighted {
-                DrawRectangleRec(bounds, Palette.navy)
+                DrawRectangleRec(bounds, appearance.highlight)
             }
-            drawLabel(item.title, hotkey: item.hotkey, x: Int(bounds.x) + Self.itemPadding, y: Int(bounds.y) + 4, color: isHighlighted ? Palette.white : Palette.black)
+            drawLabel(
+                item.title,
+                hotkey: item.hotkey,
+                x: Int(bounds.x) + Self.itemPadding,
+                y: Int(bounds.y) + 4,
+                color: isHighlighted ? appearance.highlightText : appearance.text,
+                isBold: false
+            )
         }
-        DrawRectangleLinesEx(list, 1.0, Palette.black)
+        DrawRectangleLinesEx(list, 1.0, appearance.barEdge)
     }
 
-    // Underlines the hotkey's letter, as text mode menus mark theirs.
-    private func drawLabel(_ text: String, hotkey: Character, x: Int, y: Int, color: Color) {
+    // Underlines the hotkey's letter. The default font has no bold, so bold is drawn twice, a pixel apart.
+    private func drawLabel(_ text: String, hotkey: Character?, x: Int, y: Int, color: Color, isBold: Bool) {
         DrawText(text, x, y, Self.fontSize, color)
-        guard let letter = text.firstIndex(where: { Self.matches($0, hotkey) }) else {
+        if isBold {
+            DrawText(text, x + 1, y, Self.fontSize, color)
+        }
+        guard let hotkey, let letter = text.firstIndex(where: { Self.matches($0, hotkey) }) else {
             return
         }
         let start = measure(String(text[..<letter]))

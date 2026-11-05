@@ -4,17 +4,11 @@ import Raylib
 
 @main
 struct DistroTycoon {
-    private static let menus = [
-        Menu(title: "File", hotkey: "F", items: [
-            MenuItem(title: "About", hotkey: "A", command: .about),
-            MenuItem(title: "Quit", hotkey: "Q", command: .quit),
-        ]),
-    ]
-
     static func main() {
+        let appearance = Appearance.standard
         let createWindow: CreateDistroWindow
         do {
-            createWindow = try CreateDistroWindow()
+            createWindow = try CreateDistroWindow(appearance: appearance)
         } catch {
             failToStart(error.localizedDescription)
         }
@@ -29,10 +23,10 @@ struct DistroTycoon {
         // Hudini's panels use Escape to dismiss, so it can't also close the game.
         SetExitKey(.null)
 
-        let desktop = Desktop()
-        let menuBar = MenuBar(menus: menus)
-        let notice = NoticePanel(theme: Palette.theme)
+        let desktop = Desktop(appearance: appearance)
         let distro = UserDistro()
+        let menuBar = MenuBar(menus: [systemMenu(for: distro)], appearance: appearance)
+        let notice = NoticePanel(theme: appearance.interface)
         var openCreateWindow: CreateDistroWindow? = createWindow
         var isQuitting = false
 
@@ -42,7 +36,9 @@ struct DistroTycoon {
             } else {
                 switch menuBar.update(.current()) {
                 case .about:
-                    notice.show(title: "About Distro Tycoon 2", message: "Version \(GitVersion.version)")
+                    notice.show(title: "About \(systemName(of: distro))", message: aboutMessage(for: distro))
+                case .release:
+                    notice.show(title: "Congrats!", message: distro.makeNewRelease())
                 case .quit:
                     isQuitting = true
                 case nil:
@@ -51,24 +47,44 @@ struct DistroTycoon {
                 if !menuBar.tookInput, let name = openCreateWindow?.update() {
                     distro.nameDistro(name: name)
                     openCreateWindow = nil
-                    notice.show(title: "Congrats!", message: distro.makeNewRelease())
+                    menuBar.setMenus([systemMenu(for: distro)])
                 }
             }
+            menuBar.status = openCreateWindow == nil ? distro.versionLabel : ""
 
             BeginDrawing()
-            ClearBackground(Palette.blue)
+            ClearBackground(appearance.desktopBottom)
             desktop.draw()
             openCreateWindow?.draw()
             menuBar.draw()
             if notice.isOpen {
-                DrawRectangle(0, 0, Int(GetScreenWidth()), Int(GetScreenHeight()), Palette.theme.overlay)
+                DrawRectangle(0, 0, Int(GetScreenWidth()), Int(GetScreenHeight()), appearance.interface.overlay)
                 notice.draw()
             }
             EndDrawing()
         }
 
-        desktop.unload()
         CloseWindow()
+    }
+
+    /// The menu that carries the player's distro, which is the desktop they are looking at.
+    static func systemMenu(for distro: UserDistro) -> Menu {
+        let name = systemName(of: distro)
+        var items = [MenuItem(title: "About", hotkey: "A", command: .about)]
+        if !distro.distroName.isEmpty {
+            items.append(MenuItem(title: "Release", hotkey: "R", command: .release))
+        }
+        items.append(MenuItem(title: "Quit", hotkey: "Q", command: .quit))
+        return Menu(title: name, hotkey: name.first(where: \.isLetter), items: items)
+    }
+
+    private static func systemName(of distro: UserDistro) -> String {
+        distro.distroName.isEmpty ? "Distro Tycoon 2" : distro.distroName
+    }
+
+    private static func aboutMessage(for distro: UserDistro) -> String {
+        let game = "Built with Distro Tycoon 2, version \(GitVersion.version)."
+        return distro.distroName.isEmpty ? game : "\(distro.versionLabel). \(game)"
     }
 
     private static func failToStart(_ reason: String) -> Never {

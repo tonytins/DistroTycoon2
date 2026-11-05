@@ -4,8 +4,9 @@
 
 Distro Tycoon 2 is a software tycoon game about running a Linux distro, built with
 [raylib-swift](https://github.com/tonytins/raylib-swift) and
-[Hudini](https://github.com/tonytins/Hudini). It has a blue, text mode look inside a simulated
-desktop with a global menu.
+[Hudini](https://github.com/tonytins/Hudini). It looks like a macOS-style desktop with one global
+menu, in a Frutiger Aero style with a homage to early Aqua. See [the roadmap](doc/ROADMAP.md) for
+where it's going.
 
 - `Sources/DistroTycoon` holds the game: its rules, its screens, and the main loop.
 - `Sources/DistroTycoon/Resources` holds the UIScript documents the game bundles.
@@ -32,8 +33,9 @@ desktop with a global menu.
 - Write as much of a screen as possible in UIScript XML. Code owns what the format can't describe,
   such as window frames, the menu bar, and text that comes from game state.
 - Look up the controls a screen depends on when it loads, and report a missing one as an error.
-- Take colors from `Palette`, and use font sizes in multiples of 10, which keep raylib's default
-  font sharp.
+- Take colors from `Appearance`, which works them out from the player's accent color. Leave colors
+  out of UIScript documents so they follow it. Use font sizes in multiples of 10, which keep raylib's
+  default font sharp.
 - Let the menu bar take input first. When `MenuBar.tookInput` is true, nothing under it should act
   on that frame's input.
 - Keep a control specific to this game in this repository. When Hudini is missing something

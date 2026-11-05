@@ -11,11 +11,13 @@ private struct SeededGenerator: RandomNumberGenerator {
     }
 }
 
-@Test func firstReleaseSetsVersionAndNamesTheDistro() {
+@Test func aNewDistroIsUnreleasedAndEachReleaseCountsUp() {
     let distro = UserDistro()
     distro.nameDistro(name: "Tuxedo")
+    #expect(distro.versionLabel == "Unreleased")
     #expect(distro.makeNewRelease() == "1.0 of Tuxedo has been released! Time to sit back and relax")
-    #expect(distro.distroVersion == 1)
+    #expect(distro.versionLabel == "Version 1.0")
+    #expect(distro.makeNewRelease() == "2.0 of Tuxedo has been released! Time to sit back and relax")
 }
 
 @Test func chanceCardAddsHypeOnlyWhenItHasAMessage() {

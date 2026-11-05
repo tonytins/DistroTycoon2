@@ -4,13 +4,10 @@
 <UIScript version="1">
   <Window width="400" height="130"/>
 
-  <Style name="label" textColor="#FFFFFF" fontSize="20"/>
-  <Style name="entry" textColor="#FFFFFF" fontSize="20"/>
-  <Style name="action" textColor="#FFFFFF" backgroundColor="#000080" borderColor="#FFFFFF"
-         highlightedTextColor="#FFFF55" selectedTextColor="#FFFF55" disabledTextColor="#AAAAAA" fontSize="20"/>
+  <Style name="standard" fontSize="20"/>
 
-  <Text name="nameLabel" x="16" y="14" width="368" height="20" style="label" text="Distro name:"/>
-  <TextField name="distroName" x="16" y="40" width="368" height="32" style="entry"
+  <Text name="nameLabel" x="16" y="14" width="368" height="20" style="standard" text="Distro name:"/>
+  <TextField name="distroName" x="16" y="40" width="368" height="32" style="standard"
              placeholder="Click here to type" maximumLength="30"/>
-  <Button name="submit" x="284" y="84" width="100" height="32" style="action" text="Submit"/>
+  <Button name="submit" x="284" y="84" width="100" height="32" style="standard" text="Submit"/>
 </UIScript>

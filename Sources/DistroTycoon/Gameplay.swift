@@ -33,9 +33,14 @@ class UserDistro {
         self.hype += hype
     }
 
-    /// Releases the first version and returns the message to show the player.
+    /// The version the player has shipped, for showing in the interface.
+    var versionLabel: String {
+        distroVersion == 0 ? "Unreleased" : "Version \(distroVersion).0"
+    }
+
+    /// Releases the next version and returns the message to show the player.
     func makeNewRelease() -> String {
-        distroVersion = 1
+        distroVersion += 1
         return "\(distroVersion).0 of \(distroName) has been released! Time to sit back and relax"
     }
 }

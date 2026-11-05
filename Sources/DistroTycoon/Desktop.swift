@@ -1,31 +1,31 @@
 import Raylib
 
-/// The hatched blue background behind the game's windows.
-final class Desktop {
-    private static let tileSize = 4
-    private static let checkSize = 2
+/// The glassy sky behind the game's windows, drawn from the appearance's colors.
+struct Desktop {
+    // Where each bubble sits and how big it is, as fractions of the window's size.
+    private static let bubbles: [(x: Float, y: Float, radius: Float)] = [
+        (0.08, 0.78, 0.07), (0.17, 0.90, 0.035), (0.30, 0.70, 0.02),
+        (0.72, 0.84, 0.05), (0.84, 0.66, 0.09), (0.93, 0.90, 0.03),
+    ]
 
-    private let pattern: Texture2D
+    let appearance: Appearance
 
-    /// Creates the pattern's texture. Call this after `InitWindow`.
-    init() {
-        let image = GenImageChecked(Self.tileSize, Self.tileSize, Self.checkSize, Self.checkSize, Palette.blue, Palette.darkBlue)
-        pattern = LoadTextureFromImage(image)
-        UnloadImage(image)
-        SetTextureWrap(pattern, .repeat)
-    }
-
-    /// Fills the window with the pattern, or leaves the background flat if its texture failed to load.
+    /// Fills the window with the sky, its glow, and its bubbles.
     func draw() {
-        guard IsTextureValid(pattern) else {
-            return
-        }
-        let source = Rectangle(x: 0, y: 0, width: Float(GetScreenWidth()), height: Float(GetScreenHeight()))
-        DrawTextureRec(pattern, source, .zero, .white)
-    }
+        let width = Float(GetScreenWidth())
+        let height = Float(GetScreenHeight())
+        DrawRectangleGradientV(0, 0, Int(width), Int(height), appearance.desktopTop, appearance.desktopBottom)
 
-    /// Releases the pattern's texture. Call this before `CloseWindow`.
-    func unload() {
-        UnloadTexture(pattern)
+        let white = Color(r: 255, g: 255, b: 255, a: 255)
+        let glow = Vector2(x: width * 0.5, y: height * 1.1)
+        DrawCircleGradient(glow, width * 0.7, ColorAlpha(white, 0.55), ColorAlpha(white, 0))
+
+        for bubble in Self.bubbles {
+            let center = Vector2(x: width * bubble.x, y: height * bubble.y)
+            let radius = width * bubble.radius
+            DrawCircleGradient(center, radius, ColorAlpha(white, 0.04), ColorAlpha(white, 0.28))
+            let shine = Vector2(x: center.x - (radius * 0.35), y: center.y - (radius * 0.4))
+            DrawCircleGradient(shine, radius * 0.4, ColorAlpha(white, 0.6), ColorAlpha(white, 0))
+        }
     }
 }

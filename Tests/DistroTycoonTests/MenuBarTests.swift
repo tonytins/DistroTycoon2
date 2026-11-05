@@ -152,3 +152,36 @@ private func keys(_ keys: MenuInput.Key..., alt: Bool = false) -> MenuInput {
     _ = bar.update(MenuInput(mouse: onAbout))
     #expect(bar.highlightedItem == 1)
 }
+
+@Test func aMenuWithoutAHotkeyStaysClosedUnderAlt() {
+    let bar = MenuBar(menus: [Menu(title: "2000", hotkey: nil, items: [])], measure: { $0.count * 10 })
+    _ = bar.update(keys(.letter("F"), alt: true))
+    #expect(bar.openMenu == nil)
+}
+
+@Test func replacingMenusClosesTheOpenOne() {
+    let bar = makeBar()
+    _ = bar.update(press(onFile))
+    bar.setMenus([Menu(title: "Tuxedo", hotkey: "T", items: [])])
+    #expect(bar.openMenu == nil)
+    #expect(bar.highlightedItem == nil)
+}
+
+@Test func systemMenuCarriesTheDistroAndOffersReleaseOnceNamed() {
+    let distro = UserDistro()
+    let before = DistroTycoon.systemMenu(for: distro)
+    #expect(before.title == "Distro Tycoon 2")
+    #expect(!before.items.contains { $0.command == .release })
+
+    distro.nameDistro(name: "2Cool")
+    let after = DistroTycoon.systemMenu(for: distro)
+    #expect(after.title == "2Cool")
+    #expect(after.hotkey == "C")
+    #expect(after.items.contains { $0.command == .release })
+}
+
+@Test func systemMenuHasNoHotkeyWhenTheNameHasNoLetters() {
+    let distro = UserDistro()
+    distro.nameDistro(name: "2000")
+    #expect(DistroTycoon.systemMenu(for: distro).hotkey == nil)
+}

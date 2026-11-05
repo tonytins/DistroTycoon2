@@ -5,6 +5,7 @@ import Raylib
 struct Dock {
     enum Icon {
         case terminal
+        case packages
     }
 
     /// An app the dock can open.
@@ -68,6 +69,12 @@ struct Dock {
         case .terminal:
             appearance.fillRounded(face, Color(r: 16, g: 20, b: 24, a: 255))
             appearance.drawText(">_", x: Int(face.x) + 5, y: Int(face.y) + 7, size: Self.iconTextSize, color: Color(r: 200, g: 240, b: 208, a: 255), monospaced: true)
+        case .packages:
+            // A cardboard box with its tape.
+            let box = Rectangle(x: face.x + 3, y: face.y + 7, width: face.width - 6, height: face.height - 10)
+            appearance.fillRounded(box, Color(r: 196, g: 150, b: 96, a: 255))
+            DrawRectangleRec(Rectangle(x: box.x, y: box.y, width: box.width, height: 7), Color(r: 222, g: 182, b: 128, a: 255))
+            DrawRectangleRec(Rectangle(x: box.x + (box.width / 2) - 3, y: box.y, width: 6, height: box.height), Color(r: 236, g: 222, b: 190, a: 255))
         }
     }
 

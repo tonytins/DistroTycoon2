@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- The package manager: every package on the left, and the chosen one's details on the right. -->
+<UIScript version="1">
+  <Window width="600" height="330"/>
+
+  <Style name="heading" fontSize="20"/>
+
+  <List name="packages" x="12" y="12" width="232" height="306" selectable="true"/>
+  <Slider name="packagesScroll" x="246" y="12" width="14" height="306" scrolls="packages"/>
+
+  <Text name="packageName" x="276" y="12" width="312" height="26" style="heading"/>
+  <Text name="packageType" x="276" y="42" width="312" height="18"/>
+  <Text name="packageDescription" x="276" y="72" width="312" height="60"/>
+  <Text name="packageStats" x="276" y="140" width="312" height="80"/>
+  <Button name="toggleInclude" x="276" y="226" width="160" height="30" text="Add to distro"/>
+  <Text name="summary" x="276" y="276" width="312" height="42"/>
+</UIScript>

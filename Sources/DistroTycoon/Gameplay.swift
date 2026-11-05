@@ -10,8 +10,42 @@ final class Game {
     /// Changes whenever `log` does, so an interface can tell cheaply that it should catch up.
     private(set) var logRevision = 0
 
+    /// The packages chosen for the next release, by id.
+    private(set) var includedPackages: Set<String>
+    /// The packages in the latest release, by id.
+    private(set) var shippedPackages: Set<String> = []
+    /// Changes whenever the chosen packages do.
+    private(set) var packagesRevision = 0
+
     init(repository: Repository) {
         self.repository = repository
+        includedPackages = Set(repository.packages.filter(\.isPreinstalled).map(\.id))
+    }
+
+    func isIncluded(_ package: Package) -> Bool {
+        includedPackages.contains(package.id)
+    }
+
+    /// Adds or removes a package from the next release. A preinstalled package always stays.
+    func setIncluded(_ isIncluded: Bool, _ package: Package) {
+        guard !package.isPreinstalled, isIncluded != self.isIncluded(package) else {
+            return
+        }
+        if isIncluded {
+            includedPackages.insert(package.id)
+        } else {
+            includedPackages.remove(package.id)
+        }
+        packagesRevision += 1
+    }
+
+    /// Why the distro can't be released right now, or `nil` when it can.
+    var releaseProblem: String? {
+        if distro.distroName.isEmpty {
+            return "Name your distro first."
+        }
+        let hasDesktop = repository.packages.contains { $0.type == .desktopEnvironment && isIncluded($0) }
+        return hasDesktop ? nil : "Add a desktop environment in Packages first."
     }
 
     /// Moves the game on by one day.
@@ -28,8 +62,13 @@ final class Game {
         record("Started work on \(name).")
     }
 
-    /// Releases the distro's next version and returns the message to show the player.
+    /// Releases the distro's next version with the chosen packages, and returns the message to
+    /// show the player. When `releaseProblem` isn't `nil`, nothing is released and it's returned.
     func release() -> String {
+        if let releaseProblem {
+            return releaseProblem
+        }
+        shippedPackages = includedPackages
         let message = distro.makeNewRelease()
         record(message)
         return message

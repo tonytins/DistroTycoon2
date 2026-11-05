@@ -8,6 +8,18 @@ enum MenuCommand: Equatable {
     case quit
     case clearLog
     case closeWindow
+    case setSpeed(GameSpeed)
+}
+
+/// A button at the right end of the menu bar.
+struct StatusItem: Equatable {
+    enum Icon: Equatable {
+        case pause, play, fast
+    }
+
+    let icon: Icon
+    let command: MenuCommand
+    let isSelected: Bool
 }
 
 /// A choice in a drop-down menu. `hotkey` is the letter that picks it while the menu is open.
@@ -81,6 +93,8 @@ final class MenuBar {
     private static let itemHeight = 28
     private static let itemPadding = 12
     private static let statusPadding = 12
+    private static let itemWidth = 26
+    private static let itemGap = 2
 
     private let appearance: Appearance
     private let measure: (String) -> Int
@@ -88,8 +102,10 @@ final class MenuBar {
     private var menus: [Menu]
     private var lastMouse: Vector2?
 
-    /// Text at the bar's right end, left out when the window is too narrow to fit it.
+    /// Text at the bar's right end, left of its items. It's left out when the window is too narrow.
     var status = ""
+    /// Buttons at the bar's right end, from left to right.
+    var statusItems: [StatusItem] = []
 
     /// The open menu's index, or `nil` when every menu is closed.
     private(set) var openMenu: Int?
@@ -113,9 +129,15 @@ final class MenuBar {
         close()
     }
 
-    /// Handles a frame's input and returns the command the player chose, if any.
-    func update(_ input: MenuInput) -> MenuCommand? {
+    /// Handles a frame's input and returns the command the player chose, if any. `barWidth` is how
+    /// wide the bar is, which places its status items.
+    func update(_ input: MenuInput, barWidth: Int? = nil) -> MenuCommand? {
         let wasOpen = openMenu != nil
+        if input.isPressed, openMenu == nil, let item = statusItemIndex(at: input.mouse, barWidth: barWidth ?? Int(GetScreenWidth())) {
+            lastMouse = input.mouse
+            tookInput = true
+            return statusItems[item].command
+        }
         var command = handleKeys(input)
         if command == nil {
             followPointer(to: input.mouse)
@@ -277,13 +299,50 @@ final class MenuBar {
         menus[menu].items.indices.first { CheckCollisionPointRec(point, itemBounds($0, in: menu)) }
     }
 
+    private func statusItemBounds(_ index: Int, barWidth: Int) -> Rectangle {
+        let fromRight = statusItems.count - index
+        let x = barWidth - Self.itemGap - (fromRight * (Self.itemWidth + Self.itemGap))
+        return Rectangle(x: Float(x), y: 2, width: Float(Self.itemWidth), height: Float(Self.height - 4))
+    }
+
+    private func statusItemIndex(at point: Vector2, barWidth: Int) -> Int? {
+        statusItems.indices.first { CheckCollisionPointRec(point, statusItemBounds($0, barWidth: barWidth)) }
+    }
+
     private func drawStatus(barWidth: Int) {
+        let mouse = GetMousePosition()
+        for (index, item) in statusItems.enumerated() {
+            let bounds = statusItemBounds(index, barWidth: barWidth)
+            if item.isSelected || CheckCollisionPointRec(mouse, bounds) {
+                appearance.fillRounded(bounds, item.isSelected ? appearance.highlight : appearance.barBottom)
+            }
+            drawIcon(item.icon, in: bounds, color: item.isSelected ? appearance.highlightText : appearance.text)
+        }
+        let itemsStart = statusItems.isEmpty ? barWidth : Int(statusItemBounds(0, barWidth: barWidth).x)
         let menusEnd = menus.indices.last.map { Int(titleBounds($0).x + titleBounds($0).width) } ?? 0
-        let x = barWidth - measure(status) - Self.statusPadding
+        let x = itemsStart - measure(status) - Self.statusPadding
         guard !status.isEmpty, x > menusEnd else {
             return
         }
         appearance.drawText(status, x: x, y: Self.textTop, size: Self.fontSize, color: appearance.text)
+    }
+
+    // The bundled fonts hold only printable ASCII, so the speed symbols are drawn as shapes.
+    private func drawIcon(_ icon: StatusItem.Icon, in bounds: Rectangle, color: Color) {
+        let center = Vector2(x: bounds.x + (bounds.width / 2), y: bounds.y + (bounds.height / 2))
+        func triangle(at x: Float) {
+            DrawTriangle(Vector2(x: x, y: center.y - 6), Vector2(x: x, y: center.y + 6), Vector2(x: x + 9, y: center.y), color)
+        }
+        switch icon {
+        case .pause:
+            DrawRectangleRec(Rectangle(x: center.x - 5, y: center.y - 6, width: 3, height: 12), color)
+            DrawRectangleRec(Rectangle(x: center.x + 2, y: center.y - 6, width: 3, height: 12), color)
+        case .play:
+            triangle(at: center.x - 4)
+        case .fast:
+            triangle(at: center.x - 9)
+            triangle(at: center.x)
+        }
     }
 
     private func drawDropDown(_ menu: Int) {

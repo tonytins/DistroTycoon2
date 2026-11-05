@@ -49,6 +49,8 @@ where it's going.
 - Rules return what the player should be told, and the interface decides how to show it.
 - Pass a `RandomNumberGenerator` to anything random, so tests can repeat a result.
 - Keep the game's data in plain text, such as JSON, rather than hardcoding it where practical.
+- `Repository.json` has a `version`. Add optional fields freely, since readers ignore fields they
+  don't know, and raise the version only when older readers would misread the file.
 
 ## Licensing and names
 

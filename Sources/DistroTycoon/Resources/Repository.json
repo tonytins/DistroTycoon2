@@ -1,213 +1,266 @@
 {
-  "Packages": {
-    "OkayOffice": {
-      "Name": "OkayOffice",
-      "Bugs": 2,
-      "Description": "This office suite... is pretty ok",
-      "NerdCred": 10,
-      "Popularity": 10,
-      "SizeInMB": 40,
-      "Version": 1,
-      "isOpenSource": true,
-      "TypeOfSoftware": "Office"
+  "version": 1,
+  "packages": [
+    {
+      "id": "chatchatchat",
+      "name": "Chatchatchat",
+      "description": "You know. For chatting.",
+      "type": "communication",
+      "appeal": 5,
+      "nerdCred": 0,
+      "bugginess": 1,
+      "hubbub": {
+        "stars": 470,
+        "activity": 1
+      }
     },
-    "CityLimits": {
-      "Name": "CityLimits",
-      "Bugs": 2,
-      "Description": "Design and run a very fancy city.",
-      "NerdCred": 3,
-      "Popularity": 15,
-      "SizeInMB": 120,
-      "Version": 1,
-      "isOpenSource": true,
-      "TypeOfSoftware": "Game"
+    {
+      "id": "citylimits",
+      "name": "CityLimits",
+      "description": "Design and run a very fancy city.",
+      "type": "game",
+      "appeal": 15,
+      "nerdCred": 3,
+      "bugginess": 2,
+      "hubbub": {
+        "stars": 1550,
+        "activity": 3
+      }
     },
-    "JustCards": {
-      "Name": "JustCards",
-      "Bugs": 1,
-      "Description": "Just a card game.",
-      "NerdCred": 0,
-      "Popularity": 5,
-      "SizeInMB": 20,
-      "Version": 1,
-      "isOpenSource": true,
-      "TypeOfSoftware": "Game"
+    {
+      "id": "fir",
+      "name": "Fir",
+      "description": "Terminal-only email client.",
+      "type": "communication",
+      "appeal": 1,
+      "nerdCred": 5,
+      "bugginess": 0,
+      "hubbub": {
+        "stars": 410,
+        "activity": 1
+      }
     },
-    "PainterMcPaint": {
-      "Name": "PainterMcPaint",
-      "Bugs": 1,
-      "Description": "Good for painting.  Bad for anything else.",
-      "NerdCred": 0,
-      "Popularity": 3,
-      "SizeInMB": 150,
-      "Version": 1,
-      "isOpenSource": true,
-      "TypeOfSoftware": "Graphics"
+    {
+      "id": "flamingrodent",
+      "name": "FlamingRodent",
+      "description": "A big, powerful web browser",
+      "type": "webBrowser",
+      "appeal": 15,
+      "nerdCred": 3,
+      "bugginess": 4,
+      "hubbub": {
+        "stars": 1550,
+        "activity": 3
+      }
     },
-    "Mailinator": {
-      "Name": "Mailinator",
-      "Bugs": 1,
-      "Description": "Super advanced email client",
-      "NerdCred": 0,
-      "Popularity": 12,
-      "SizeInMB": 80,
-      "Version": 1,
-      "isOpenSource": true,
-      "TypeOfSoftware": "Communication"
+    {
+      "id": "hubbub",
+      "name": "Hubbub",
+      "description": "Where your distro's code, issues, and contributors live.",
+      "type": "programming",
+      "appeal": 2,
+      "nerdCred": 4,
+      "bugginess": 1,
+      "preinstalled": true,
+      "hubbub": {
+        "stars": 4800,
+        "activity": 5
+      }
     },
-    "Chatchatchat": {
-      "Name": "Chatchatchat",
-      "Bugs": 1,
-      "Description": "You know.  For chatting.",
-      "NerdCred": 0,
-      "Popularity": 5,
-      "SizeInMB": 50,
-      "Version": 1,
-      "isOpenSource": true,
-      "TypeOfSoftware": "Communication"
+    {
+      "id": "justcards",
+      "name": "JustCards",
+      "description": "Just a card game.",
+      "type": "game",
+      "appeal": 5,
+      "nerdCred": 0,
+      "bugginess": 1,
+      "hubbub": {
+        "stars": 470,
+        "activity": 1
+      }
     },
-    "Fir": {
-      "Name": "Fir",
-      "Bugs": 0,
-      "Description": "Terminal-only email client.",
-      "NerdCred": 5,
-      "Popularity": 1,
-      "SizeInMB": 1,
-      "Version": 1,
-      "isOpenSource": true,
-      "TypeOfSoftware": "Communication"
+    {
+      "id": "justpascal",
+      "name": "JustPascal",
+      "description": "Pascal compiler.",
+      "type": "programming",
+      "appeal": 1,
+      "nerdCred": 11,
+      "bugginess": 0,
+      "hubbub": {
+        "stars": 770,
+        "activity": 2
+      }
     },
-    "PixelPusher": {
-      "Name": "PixelPusher",
-      "Bugs": 0,
-      "Description": "A very simple image editor.",
-      "NerdCred": 1,
-      "Popularity": 2,
-      "SizeInMB": 2,
-      "Version": 1,
-      "isOpenSource": true,
-      "TypeOfSoftware": "Graphics"
+    {
+      "id": "lunarblackout",
+      "name": "LunarBlackout",
+      "description": "A good, flexible integrated development environment.",
+      "type": "programming",
+      "appeal": 4,
+      "nerdCred": 10,
+      "bugginess": 4,
+      "hubbub": {
+        "stars": 980,
+        "activity": 2
+      }
     },
-    "The Dork": {
-      "Name": "The Dork",
-      "Bugs": 2,
-      "Description": "Robust, powerful graphics editor.",
-      "NerdCred": 5,
-      "Popularity": 12,
-      "SizeInMB": 65,
-      "Version": 1,
-      "isOpenSource": true,
-      "TypeOfSoftware": "Graphics"
+    {
+      "id": "lundukedevelopmentkit",
+      "name": "Lunduke Development Kit",
+      "description": "The most awesome programming language. Ever.",
+      "type": "programming",
+      "appeal": 15,
+      "nerdCred": 15,
+      "bugginess": 0,
+      "hubbub": {
+        "stars": 2270,
+        "activity": 4
+      }
     },
-    "Pictures-In-Folders": {
-      "Name": "Pictures-In-Folders",
-      "Bugs": 0,
-      "Description": "A simple photo gallery for organizing images.",
-      "NerdCred": 0,
-      "Popularity": 8,
-      "SizeInMB": 8,
-      "Version": 1,
-      "isOpenSource": true,
-      "TypeOfSoftware": "Graphics"
+    {
+      "id": "mailinator",
+      "name": "Mailinator",
+      "description": "Super advanced email client",
+      "type": "communication",
+      "appeal": 12,
+      "nerdCred": 0,
+      "bugginess": 1,
+      "hubbub": {
+        "stars": 1100,
+        "activity": 2
+      }
     },
-    "LunarBlackout": {
-      "Name": "LunarBlackout",
-      "Bugs": 4,
-      "Description": "A good, flexible integrated development environment.",
-      "NerdCred": 10,
-      "Popularity": 4,
-      "SizeInMB": 120,
-      "Version": 1,
-      "isOpenSource": true,
-      "TypeOfSoftware": "Programming"
+    {
+      "id": "okayoffice",
+      "name": "OkayOffice",
+      "description": "This office suite... is pretty ok",
+      "type": "office",
+      "appeal": 10,
+      "nerdCred": 10,
+      "bugginess": 2,
+      "hubbub": {
+        "stars": 1520,
+        "activity": 3
+      }
     },
-    "JustPascal": {
-      "Name": "JustPascal",
-      "Bugs": 0,
-      "Description": "Pascal compiler.",
-      "NerdCred": 11,
-      "Popularity": 1,
-      "SizeInMB": 40,
-      "Version": 1,
-      "isOpenSource": true,
-      "TypeOfSoftware": "Programming"
+    {
+      "id": "paintermcpaint",
+      "name": "PainterMcPaint",
+      "description": "Good for painting. Bad for anything else.",
+      "type": "graphics",
+      "appeal": 3,
+      "nerdCred": 0,
+      "bugginess": 1,
+      "hubbub": {
+        "stars": 290,
+        "activity": 1
+      }
     },
-    "Lunduke Development Kit": {
-      "Name": "Lunduke Development Kit",
-      "Bugs": 0,
-      "Description": "The most awesome programming language.  Ever.",
-      "NerdCred": 15,
-      "Popularity": 15,
-      "SizeInMB": 10,
-      "Version": 1,
-      "isOpenSource": true,
-      "TypeOfSoftware": "Programming"
+    {
+      "id": "picturesinfolders",
+      "name": "Pictures-In-Folders",
+      "description": "A simple photo gallery for organizing images.",
+      "type": "graphics",
+      "appeal": 8,
+      "nerdCred": 0,
+      "bugginess": 0,
+      "hubbub": {
+        "stars": 740,
+        "activity": 2
+      }
     },
-    "QDE": {
-      "Name": "QDE",
-      "Bugs": 3,
-      "Description": "The Q Desktop Environment.  Lots of widgets.",
-      "NerdCred": 3,
-      "Popularity": 10,
-      "SizeInMB": 50,
-      "Version": 1,
-      "isOpenSource": true,
-      "TypeOfSoftware": "DesktopEnvironment"
+    {
+      "id": "pixelpusher",
+      "name": "PixelPusher",
+      "description": "A very simple image editor.",
+      "type": "graphics",
+      "appeal": 2,
+      "nerdCred": 1,
+      "bugginess": 0,
+      "hubbub": {
+        "stars": 260,
+        "activity": 1
+      }
     },
-    "UCDE": {
-      "Name": "UCDE",
-      "Bugs": 0,
-      "Description": "The Ultra Confusing Desktop Environment",
-      "NerdCred": 20,
-      "Popularity": 1,
-      "SizeInMB": 1,
-      "Version": 1,
-      "isOpenSource": true,
-      "TypeOfSoftware": "DesktopEnvironment"
+    {
+      "id": "qde",
+      "name": "QDE",
+      "description": "The Q Desktop Environment. Lots of widgets.",
+      "type": "desktopEnvironment",
+      "appeal": 10,
+      "nerdCred": 3,
+      "bugginess": 3,
+      "hubbub": {
+        "stars": 1100,
+        "activity": 2
+      }
     },
-    "START": {
-      "Name": "START",
-      "Bugs": 2,
-      "Description": "The Start Desktop Environment",
-      "NerdCred": 1,
-      "Popularity": 1,
-      "SizeInMB": 2,
-      "Version": 1,
-      "isOpenSource": true,
-      "TypeOfSoftware": "DesktopEnvironment"
+    {
+      "id": "shmoogleshrome",
+      "name": "ShmoogleShrome",
+      "description": "Lightweight and superfast browser",
+      "type": "webBrowser",
+      "appeal": 10,
+      "nerdCred": 3,
+      "bugginess": 2,
+      "hubbub": {
+        "stars": 1100,
+        "activity": 2
+      }
     },
-    "FlamingRodent": {
-      "Name": "FlamingRodent",
-      "Bugs": 4,
-      "Description": "A big, powerful web browser",
-      "NerdCred": 3,
-      "Popularity": 15,
-      "SizeInMB": 10,
-      "Version": 1,
-      "isOpenSource": true,
-      "TypeOfSoftware": "WebBrowser"
+    {
+      "id": "start",
+      "name": "START",
+      "description": "The Start Desktop Environment",
+      "type": "desktopEnvironment",
+      "appeal": 1,
+      "nerdCred": 1,
+      "bugginess": 2,
+      "hubbub": {
+        "stars": 170,
+        "activity": 1
+      }
     },
-    "ShmoogleShrome": {
-      "Name": "ShmoogleShrome",
-      "Bugs": 2,
-      "Description": "Lightweight and superfast browser",
-      "NerdCred": 3,
-      "Popularity": 10,
-      "SizeInMB": 10,
-      "Version": 1,
-      "isOpenSource": true,
-      "TypeOfSoftware": "WebBrowser"
+    {
+      "id": "textoweb",
+      "name": "Text-O-Web",
+      "description": "A text only web browser that runs in the terminal",
+      "type": "webBrowser",
+      "appeal": 0,
+      "nerdCred": 20,
+      "bugginess": 0,
+      "hubbub": {
+        "stars": 1220,
+        "activity": 3
+      }
     },
-    "Text-O-Web": {
-      "Name": "Text-O-Web",
-      "Bugs": 0,
-      "Description": "A text only web browser that runs in the terminal",
-      "NerdCred": 20,
-      "Popularity": 0,
-      "SizeInMB": 1,
-      "Version": 1,
-      "isOpenSource": true,
-      "TypeOfSoftware": "WebBrowser"
+    {
+      "id": "thedork",
+      "name": "The Dork",
+      "description": "Robust, powerful graphics editor.",
+      "type": "graphics",
+      "appeal": 12,
+      "nerdCred": 5,
+      "bugginess": 2,
+      "hubbub": {
+        "stars": 1400,
+        "activity": 3
+      }
+    },
+    {
+      "id": "ucde",
+      "name": "UCDE",
+      "description": "The Ultra Confusing Desktop Environment",
+      "type": "desktopEnvironment",
+      "appeal": 1,
+      "nerdCred": 20,
+      "bugginess": 0,
+      "hubbub": {
+        "stars": 1310,
+        "activity": 3
+      }
     }
-  }
+  ]
 }

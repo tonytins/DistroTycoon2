@@ -47,9 +47,9 @@ The port from TermKit to raylib-swift and Hudini.
 
 - [x] Bundle `Repository.json` and load it
 - [x] A game state with a daily update
-- [ ] A day clock and speed controls in the menu bar
-- [ ] Rewrite `Repository.json` around this game's needs
-- [ ] A package manager app for choosing what ships, with at least one desktop environment required
+- [x] A day clock and speed controls in the menu bar
+- [x] Rewrite `Repository.json` around this game's needs, with Hubbub as a preinstalled package
+- [x] A package manager app for choosing what ships, with at least one desktop environment required
 - [ ] Users, and open issues that cost users
 - [ ] A Hubbub button at the right of the menu bar, opening a pane with the project's issues
 - [ ] The player fixing one issue at a time, with fixes reaching users only through a release

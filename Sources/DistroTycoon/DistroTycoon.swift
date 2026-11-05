@@ -29,6 +29,7 @@ struct DistroTycoon {
         let fonts: Fonts
         let createDistro: CreateDistroApp
         let terminal: TerminalApp
+        let packageManager: PackageManagerApp
         let appearance: Appearance
         do {
             fonts = Fonts(
@@ -38,6 +39,7 @@ struct DistroTycoon {
             appearance = Appearance(fonts: fonts)
             createDistro = try CreateDistroApp(appearance: appearance)
             terminal = try TerminalApp(game: game, appearance: appearance)
+            packageManager = try PackageManagerApp(game: game, appearance: appearance)
         } catch {
             CloseWindow()
             failToStart(error.localizedDescription)
@@ -50,6 +52,7 @@ struct DistroTycoon {
         let namingWindow = DesktopWindow(app: createDistro, appearance: appearance)
         let workspace = Workspace(
             dockItems: [
+                Dock.Item(title: packageManager.title, icon: .packages, window: DesktopWindow(app: packageManager, appearance: appearance)),
                 Dock.Item(title: terminal.title, icon: .terminal, window: DesktopWindow(app: terminal, appearance: appearance)),
             ],
             appearance: appearance
@@ -57,23 +60,29 @@ struct DistroTycoon {
         workspace.open(namingWindow)
         var isQuitting = false
         var shownFocus: String?
+        var clock = GameClock()
+        var generator = SystemRandomNumberGenerator()
 
         while !isQuitting && !WindowShouldClose() {
             if notice.isOpen {
                 _ = notice.update()
             } else {
                 let input = MenuInput.current()
+                menuBar.statusItems = speedItems(for: clock.speed, isRunning: !distro.distroName.isEmpty)
                 switch menuBar.update(input) {
                 case .about:
                     notice.show(title: "About \(systemName(of: distro))", message: aboutMessage(for: distro))
                 case .release:
-                    notice.show(title: "Congrats!", message: game.release())
+                    let problem = game.releaseProblem
+                    notice.show(title: problem == nil ? "Congrats!" : "Not Yet", message: game.release())
                 case .quit:
                     isQuitting = true
                 case .clearLog:
                     game.clearLog()
                 case .closeWindow:
                     workspace.closeFocused()
+                case let .setSpeed(speed):
+                    clock.speed = speed
                 case nil:
                     break
                 }
@@ -81,6 +90,11 @@ struct DistroTycoon {
                     game.nameDistro(name)
                     workspace.close(namingWindow)
                     shownFocus = nil
+                    clock.speed = .normal
+                }
+                // Days pass only while nothing modal is open, and only once the distro has a name.
+                for _ in 0 ..< clock.advance(by: Double(GetFrameTime())) {
+                    game.advanceDay(using: &generator)
                 }
             }
             workspace.refresh()
@@ -90,7 +104,7 @@ struct DistroTycoon {
                 shownFocus = focus
                 menuBar.setMenus(menus(for: distro, focusedApp: workspace.focusedApp))
             }
-            menuBar.status = distro.distroName.isEmpty ? "" : distro.versionLabel
+            menuBar.status = distro.distroName.isEmpty ? "" : "Day \(game.day)    \(distro.versionLabel)"
 
             BeginDrawing()
             ClearBackground(appearance.desktopBottom)
@@ -107,6 +121,18 @@ struct DistroTycoon {
         UnloadFont(fonts.interface)
         UnloadFont(fonts.monospaced)
         CloseWindow()
+    }
+
+    /// The speed buttons for the menu bar, which appear once the game is running.
+    static func speedItems(for speed: GameSpeed, isRunning: Bool) -> [StatusItem] {
+        guard isRunning else {
+            return []
+        }
+        return [
+            StatusItem(icon: .pause, command: .setSpeed(.paused), isSelected: speed == .paused),
+            StatusItem(icon: .play, command: .setSpeed(.normal), isSelected: speed == .normal),
+            StatusItem(icon: .fast, command: .setSpeed(.fast), isSelected: speed == .fast),
+        ]
     }
 
     /// The system menu, followed by the focused app's menus.

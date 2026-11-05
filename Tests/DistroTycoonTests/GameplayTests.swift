@@ -30,6 +30,7 @@ private func makeGame() throws -> Game {
 @Test func namingAndReleasingAreLogged() throws {
     let game = try makeGame()
     game.nameDistro("Tuxedo")
+    game.setIncluded(true, try #require(game.repository.package(id: "qde")))
     #expect(game.log == ["[Day 0] Started work on Tuxedo."])
     let message = game.release()
     #expect(game.log.last == "[Day 0] \(message)")
@@ -38,6 +39,7 @@ private func makeGame() throws -> Game {
 @Test func theLogKeepsOnlyItsNewestEntries() throws {
     let game = try makeGame()
     game.nameDistro("Tuxedo")
+    game.setIncluded(true, try #require(game.repository.package(id: "qde")))
     for _ in 1 ... 600 {
         _ = game.release()
     }

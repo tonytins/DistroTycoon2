@@ -1,5 +1,4 @@
 import Foundation
-import TermKit
 
 class Gameplay {
     var timeUpdate: Int = 0
@@ -35,11 +34,13 @@ class UserDistro {
     }
 }
 
-func chanceCard(distro: UserDistro) {
-    let chance = Int.random(in: 1 ..< 35)
+/// Rolls for a random event, applies it to `distro`, and returns the message to show the player, if any.
+func chanceCard(distro: UserDistro, using generator: inout some RandomNumberGenerator) -> String? {
+    let chance = Int.random(in: 1 ..< 35, using: &generator)
 
     if chance == 20 {
-        MessageBox.info("", message: "Your latest version got reviewed favorably in a major magazine!")
         distro.hype += 5
+        return "Your latest version got reviewed favorably in a major magazine!"
     }
+    return nil
 }

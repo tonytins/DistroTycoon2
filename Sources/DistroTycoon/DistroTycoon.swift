@@ -4,20 +4,18 @@ import Raylib
 
 @main
 struct DistroTycoon {
+    // Fonts load at the size they're mostly drawn at, and raylib scales them for the rest.
+    private static let fontLoadSize = 32
+
     static func main() {
-        let appearance = Appearance.standard
         let game: Game
-        let createDistro: CreateDistroApp
-        let terminal: TerminalApp
         do {
             game = try Game(repository: Resources.loadRepository())
-            createDistro = try CreateDistroApp(appearance: appearance)
-            terminal = try TerminalApp(game: game, appearance: appearance)
         } catch {
             failToStart(error.localizedDescription)
         }
 
-        SetConfigFlags([.vsyncHint, .windowResizable])
+        SetConfigFlags([.vsyncHint, .windowResizable, .msaa4xHint])
         InitWindow(800, 600, "Distro Tycoon 2")
         guard IsWindowReady() else {
             failToStart("The game window couldn't be opened.")
@@ -26,6 +24,24 @@ struct DistroTycoon {
         SetTargetFPS(60)
         // Hudini's panels use Escape to dismiss, so it can't also close the game.
         SetExitKey(.null)
+
+        // Fonts and the views that draw with them need the window, so a failure here closes it first.
+        let fonts: Fonts
+        let createDistro: CreateDistroApp
+        let terminal: TerminalApp
+        let appearance: Appearance
+        do {
+            fonts = Fonts(
+                interface: try Resources.loadFont(named: "OpenSans-Regular", size: fontLoadSize),
+                monospaced: try Resources.loadFont(named: "FiraCode-Regular", size: fontLoadSize)
+            )
+            appearance = Appearance(fonts: fonts)
+            createDistro = try CreateDistroApp(appearance: appearance)
+            terminal = try TerminalApp(game: game, appearance: appearance)
+        } catch {
+            CloseWindow()
+            failToStart(error.localizedDescription)
+        }
 
         let desktop = Desktop(appearance: appearance)
         let distro = game.distro
@@ -88,6 +104,8 @@ struct DistroTycoon {
             EndDrawing()
         }
 
+        UnloadFont(fonts.interface)
+        UnloadFont(fonts.monospaced)
         CloseWindow()
     }
 

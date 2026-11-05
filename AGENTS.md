@@ -33,8 +33,10 @@ where it's going.
   such as window frames, the menu bar, and text that comes from game state.
 - Look up the controls a screen depends on when it loads, and report a missing one as an error.
 - Take colors from `Appearance`, which works them out from the player's accent color. Leave colors
-  out of UIScript documents so they follow it, unless an app has a fixed look, as the terminal does. Use font sizes in multiples of 10, which keep raylib's
-  default font sharp.
+  out of UIScript documents so they follow it, unless an app has a fixed look, as the terminal does.
+- Draw text through `Appearance` or a Hudini theme, so it uses the bundled fonts: Open Sans for the
+  interface and Fira Code for monospaced text. Leave text sizes to the theme unless a screen needs
+  its own.
 - A desktop app conforms to `DesktopApp`, and `DesktopWindow` gives it a frame.
 - Let the menu bar take input first. When `MenuBar.tookInput` is true, nothing under it should act
   on that frame's input.

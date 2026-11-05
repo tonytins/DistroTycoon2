@@ -21,6 +21,8 @@ final class CreateDistroApp: DesktopApp {
             throw ResourceError.missingControl(document: "createdistro")
         }
         view = UIScriptView(script: script, theme: appearance.interface)
+        // The window opens ready for typing.
+        view.textField(named: Self.nameField)?.setFocused(true)
         contentSize = Vector2(x: script.window.size.width, y: script.window.size.height)
     }
 

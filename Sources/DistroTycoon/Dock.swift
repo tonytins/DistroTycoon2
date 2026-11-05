@@ -15,7 +15,8 @@ struct Dock {
     }
 
     private static let bottomGap: Float = 8
-    private static let labelSize = 20
+    private static let labelSize = 14
+    private static let iconTextSize = 18
     private static let labelPadding = 6
 
     let items: [Item]
@@ -65,8 +66,8 @@ struct Dock {
         let face = Rectangle(x: bounds.x + 4, y: bounds.y + 4, width: bounds.width - 8, height: bounds.height - 8)
         switch icon {
         case .terminal:
-            DrawRectangleRounded(face, 0.2, 6, Color(r: 16, g: 20, b: 24, a: 255))
-            DrawText(">_", Int(face.x) + 5, Int(face.y) + 8, Self.labelSize, Color(r: 200, g: 240, b: 208, a: 255))
+            appearance.fillRounded(face, Color(r: 16, g: 20, b: 24, a: 255))
+            appearance.drawText(">_", x: Int(face.x) + 5, y: Int(face.y) + 7, size: Self.iconTextSize, color: Color(r: 200, g: 240, b: 208, a: 255), monospaced: true)
         }
     }
 
@@ -74,14 +75,14 @@ struct Dock {
         guard let button else {
             return
         }
-        let width = MeasureText(title, Self.labelSize) + (Self.labelPadding * 2)
+        let width = appearance.textWidth(title, size: Self.labelSize) + (Self.labelPadding * 2)
         let pill = Rectangle(
             x: button.x + ((button.width - Float(width)) / 2),
-            y: button.y - Float(Self.labelSize) - 22,
+            y: button.y - Float(Self.labelSize) - 24,
             width: Float(width),
-            height: Float(Self.labelSize + 6)
+            height: Float(Self.labelSize + 8)
         )
-        DrawRectangleRounded(pill, 0.5, 6, appearance.interface.panel)
-        DrawText(title, Int(pill.x) + Self.labelPadding, Int(pill.y) + 3, Self.labelSize, appearance.text)
+        appearance.fillRounded(pill, appearance.interface.panel)
+        appearance.drawText(title, x: Int(pill.x) + Self.labelPadding, y: Int(pill.y) + 3, size: Self.labelSize, color: appearance.text)
     }
 }

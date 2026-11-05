@@ -1,5 +1,6 @@
 import Foundation
 import Hudini
+import Raylib
 
 /// A problem with a file the game ships with.
 enum ResourceError: LocalizedError {
@@ -31,6 +32,21 @@ enum Resources {
             FileHandle.standardError.write(Data(warning.utf8))
         }
         return script
+    }
+
+    /// Loads a bundled font at the size it's mostly drawn at, smoothed for the sizes it's scaled to.
+    /// Call this after `InitWindow`, and unload the font before `CloseWindow`.
+    static func loadFont(named name: String, size: Int) throws -> Font {
+        let file = "Fonts/\(name).ttf"
+        guard let url = Bundle.module.url(forResource: name, withExtension: "ttf", subdirectory: "Fonts") else {
+            throw ResourceError.missing(file: file)
+        }
+        let font = LoadFontEx(url.path, Int32(size), nil, 0)
+        guard IsFontValid(font), font.texture.id != 0 else {
+            throw ResourceError.invalid(file: file, reason: "raylib couldn't load it.")
+        }
+        SetTextureFilter(font.texture, .bilinear)
+        return font
     }
 
     /// Reads the bundled package repository.

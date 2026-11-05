@@ -4,7 +4,7 @@
   <Window width="520" height="260"/>
 
   <Style name="console" textColor="#C8F0D0" backgroundColor="#101418" borderColor="#101418"
-         fillColor="#5A7A62" fontSize="20"/>
+         fillColor="#5A7A62" fontSize="15"/>
 
   <List name="log" x="0" y="0" width="504" height="260" style="console"/>
   <Slider name="logScroll" x="504" y="0" width="16" height="260" style="console" scrolls="log"/>

@@ -26,6 +26,7 @@ let package = Package(
             resources: [
                 .copy("Resources/createdistro.xml"),
                 .copy("Resources/terminal.xml"),
+                .copy("Resources/Fonts"),
                 .copy("Resources/Repository.json"),
             ],
             plugins: [

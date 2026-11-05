@@ -48,11 +48,13 @@ final class DesktopWindow: StackedWindow {
 
     let app: any DesktopApp
 
+    private let appearance: Appearance
     private let frame: WindowFrame
     private let size: Vector2
 
     init(app: any DesktopApp, appearance: Appearance) {
         self.app = app
+        self.appearance = appearance
         frame = WindowFrame(title: app.title, theme: appearance.interface)
         frame.showsCloseButton = app.isClosable
         size = Vector2(x: app.contentSize.x, y: app.contentSize.y + Float(WindowFrame.titleHeight))
@@ -77,7 +79,7 @@ final class DesktopWindow: StackedWindow {
         frame.draw(in: bounds)
         app.draw(at: Self.origin(in: bounds))
         if !isFocused {
-            DrawRectangleRec(bounds, ColorAlpha(Color(r: 255, g: 255, b: 255, a: 255), Self.backgroundFade))
+            appearance.fillRounded(bounds, ColorAlpha(Color(r: 255, g: 255, b: 255, a: 255), Self.backgroundFade))
         }
     }
 

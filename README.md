@@ -40,6 +40,8 @@ So far, the game has only been run on Fedora-based Linux. The other targets are 
 
 - [Linux Tycoon](https://github.com/BryanLunduke/Linux-Tycoon-DOS) by Bryan Lunduke, the game's inspiration and the source of its fictional packages
 - [raylib-swift](https://github.com/tonytins/raylib-swift) and [Hudini](https://github.com/tonytins/Hudini)
+- [Open Sans](Sources/DistroTycoon/Resources/Fonts/OpenSans-LICENSE.txt) by Google, under the Apache License 2.0
+- [Fira Code](Sources/DistroTycoon/Resources/Fonts/FiraCode-OFL.txt) by the Fira Code Project Authors, under the SIL Open Font License 1.1
 
 ## License
 

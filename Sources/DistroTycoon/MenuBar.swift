@@ -75,7 +75,8 @@ extension MenuInput.Key {
 final class MenuBar {
     static let height = 28
 
-    private static let fontSize = 20
+    private static let fontSize = 16
+    private static let textTop = 6
     private static let titlePadding = 10
     private static let itemHeight = 28
     private static let itemPadding = 12
@@ -99,15 +100,11 @@ final class MenuBar {
     /// Whether the last update used the pointer or keyboard, so that nothing under the bar should.
     private(set) var tookInput = false
 
-    /// Creates a bar. `measure` gives a label's width in pixels, by default at the bar's font size.
-    init(
-        menus: [Menu],
-        appearance: Appearance = .standard,
-        measure: @escaping (String) -> Int = { MeasureText($0, MenuBar.fontSize) }
-    ) {
+    /// Creates a bar. `measure` gives a label's width in pixels, by default in the appearance's font.
+    init(menus: [Menu], appearance: Appearance = .standard, measure: ((String) -> Int)? = nil) {
         self.menus = menus
         self.appearance = appearance
-        self.measure = measure
+        self.measure = measure ?? { appearance.textWidth($0, size: MenuBar.fontSize) }
     }
 
     /// Replaces the menus, such as when another app takes focus, and closes any open one.
@@ -146,7 +143,7 @@ final class MenuBar {
                 menus[index].title,
                 hotkey: menus[index].hotkey,
                 x: Int(bounds.x) + Self.titlePadding,
-                y: 4,
+                y: Self.textTop,
                 color: isOpen ? appearance.highlightText : appearance.text,
                 isBold: index == 0
             )
@@ -286,7 +283,7 @@ final class MenuBar {
         guard !status.isEmpty, x > menusEnd else {
             return
         }
-        DrawText(status, x, 4, Self.fontSize, appearance.text)
+        appearance.drawText(status, x: x, y: Self.textTop, size: Self.fontSize, color: appearance.text)
     }
 
     private func drawDropDown(_ menu: Int) {
@@ -302,7 +299,7 @@ final class MenuBar {
                 item.title,
                 hotkey: item.hotkey,
                 x: Int(bounds.x) + Self.itemPadding,
-                y: Int(bounds.y) + 4,
+                y: Int(bounds.y) + Self.textTop,
                 color: isHighlighted ? appearance.highlightText : appearance.text,
                 isBold: false
             )
@@ -310,18 +307,18 @@ final class MenuBar {
         DrawRectangleLinesEx(list, 1.0, appearance.barEdge)
     }
 
-    // Underlines the hotkey's letter. The default font has no bold, so bold is drawn twice, a pixel apart.
+    // Underlines the hotkey's letter. Bold is the font drawn twice, a pixel apart, so only one font needs loading.
     private func drawLabel(_ text: String, hotkey: Character?, x: Int, y: Int, color: Color, isBold: Bool) {
-        DrawText(text, x, y, Self.fontSize, color)
+        appearance.drawText(text, x: x, y: y, size: Self.fontSize, color: color)
         if isBold {
-            DrawText(text, x + 1, y, Self.fontSize, color)
+            appearance.drawText(text, x: x + 1, y: y, size: Self.fontSize, color: color)
         }
         guard let hotkey, let letter = text.firstIndex(where: { Self.matches($0, hotkey) }) else {
             return
         }
         let start = measure(String(text[..<letter]))
         let width = measure(String(text[letter]))
-        DrawRectangle(x + start, y + Self.fontSize, width, 2, color)
+        DrawRectangle(x + start, y + Self.fontSize + 1, width, 1, color)
     }
 
     private static func isOnBar(_ point: Vector2) -> Bool {

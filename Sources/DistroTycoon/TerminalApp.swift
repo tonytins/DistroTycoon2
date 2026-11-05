@@ -23,7 +23,7 @@ final class TerminalApp: DesktopApp {
     /// Reads the app's layout, and reports a document that can't be read or lacks a control the game needs.
     init(game: Game, appearance: Appearance = .standard) throws {
         let script = try Resources.loadScript(named: "terminal")
-        view = UIScriptView(script: script, theme: appearance.interface)
+        view = UIScriptView(script: script, theme: appearance.console)
         guard let list = view.list(named: Self.logList) else {
             throw ResourceError.missingControl(document: "terminal")
         }

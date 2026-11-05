@@ -8,6 +8,7 @@ enum Palette {
     static let navy = Color(r: 0, g: 0, b: 85, a: 255)
     static let cyan = Color(r: 0, g: 170, b: 170, a: 255)
     static let lightGray = Color(r: 170, g: 170, b: 170, a: 255)
+    static let black = Color(r: 0, g: 0, b: 0, a: 255)
     static let lightRed = Color(r: 255, g: 85, b: 85, a: 255)
     static let red = Color(r: 170, g: 0, b: 0, a: 255)
     static let yellow = Color(r: 255, g: 255, b: 85, a: 255)

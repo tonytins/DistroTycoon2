@@ -29,7 +29,10 @@ let package = Package(
         ),
         .testTarget(
             name: "DistroTycoonTests",
-            dependencies: ["DistroTycoon"],
+            dependencies: [
+                "DistroTycoon",
+                .product(name: "Raylib", package: "raylib-swift"),
+            ],
         ),
     ],
     swiftLanguageModes: [.v6],

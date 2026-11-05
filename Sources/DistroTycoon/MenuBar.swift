@@ -9,12 +9,13 @@ enum MenuCommand: Equatable {
     case clearLog
     case closeWindow
     case setSpeed(GameSpeed)
+    case toggleHubbub
 }
 
 /// A button at the right end of the menu bar.
 struct StatusItem: Equatable {
     enum Icon: Equatable {
-        case pause, play, fast
+        case hubbub, pause, play, fast
     }
 
     let icon: Icon
@@ -334,6 +335,15 @@ final class MenuBar {
             DrawTriangle(Vector2(x: x, y: center.y - 6), Vector2(x: x, y: center.y + 6), Vector2(x: x + 9, y: center.y), color)
         }
         switch icon {
+        case .hubbub:
+            // A speech bubble, for the chatter of a busy project.
+            let bubble = Rectangle(x: center.x - 9, y: center.y - 7, width: 18, height: 12)
+            appearance.fillRounded(bubble, color)
+            DrawTriangle(Vector2(x: center.x - 4, y: bubble.y + bubble.height - 1), Vector2(x: center.x - 6, y: center.y + 9), Vector2(x: center.x + 1, y: bubble.y + bubble.height - 1), color)
+            let dots = color.r > 128 ? appearance.highlight : appearance.barTop
+            for offset: Float in [-5, 0, 5] {
+                DrawCircleV(Vector2(x: center.x + offset, y: center.y - 1), 1.5, dots)
+            }
         case .pause:
             DrawRectangleRec(Rectangle(x: center.x - 5, y: center.y - 6, width: 3, height: 12), color)
             DrawRectangleRec(Rectangle(x: center.x + 2, y: center.y - 6, width: 3, height: 12), color)

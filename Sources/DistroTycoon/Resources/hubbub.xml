@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- The Hubbub pane, which drops down from its button in the menu bar. -->
+<UIScript version="1">
+  <Window width="440" height="420"/>
+
+  <Style name="heading" fontSize="17"/>
+
+  <Text name="stats" x="12" y="12" width="416" height="40"/>
+
+  <Text name="issuesHeading" x="12" y="62" width="200" height="20" style="heading" text="Issues"/>
+  <List name="issues" x="12" y="86" width="398" height="150" selectable="true"/>
+  <Slider name="issuesScroll" x="414" y="86" width="14" height="150" scrolls="issues"/>
+  <Button name="fix" x="12" y="246" width="110" height="30" text="Fix"/>
+  <Text name="fixStatus" x="134" y="246" width="294" height="40"/>
+
+  <Text name="cycleHeading" x="12" y="298" width="200" height="20" style="heading" text="Release cycle"/>
+  <Button name="noSchedule" x="12" y="322" width="132" height="30" text="No schedule"/>
+  <Button name="rolling" x="154" y="322" width="132" height="30" text="Rolling"/>
+  <Button name="predictable" x="296" y="322" width="132" height="30" text="Predictable"/>
+  <Button name="lts" x="12" y="364" width="132" height="30" text="LTS releases"/>
+  <Text name="schedule" x="154" y="362" width="274" height="50"/>
+</UIScript>

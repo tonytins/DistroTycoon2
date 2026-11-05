@@ -27,6 +27,7 @@ let package = Package(
                 .copy("Resources/createdistro.xml"),
                 .copy("Resources/terminal.xml"),
                 .copy("Resources/packages.xml"),
+                .copy("Resources/hubbub.xml"),
                 .copy("Resources/Fonts"),
                 .copy("Resources/Repository.json"),
             ],

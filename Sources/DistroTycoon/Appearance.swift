@@ -110,6 +110,16 @@ struct Appearance {
         DrawRectangleRounded(bounds, min(1, Self.cornerRadius * 2 / shortest), 8, color)
     }
 
+    /// Outlines `bounds` with the theme's rounded corners, drawing inside it.
+    func outlineRounded(_ bounds: Rectangle, _ color: Color, thickness: Float = 1) {
+        let inner = Rectangle(x: bounds.x + thickness, y: bounds.y + thickness, width: bounds.width - (thickness * 2), height: bounds.height - (thickness * 2))
+        let shortest = min(inner.width, inner.height)
+        guard shortest > 0 else {
+            return
+        }
+        DrawRectangleRoundedLinesEx(inner, min(1, max(0, Self.cornerRadius - thickness) * 2 / shortest), 8, thickness, color)
+    }
+
     /// Returns white or `dark`, whichever reads better on `background`.
     static func readableText(on background: Color, dark: Color) -> Color {
         let brightness = (0.299 * Float(background.r)) + (0.587 * Float(background.g)) + (0.114 * Float(background.b))

@@ -81,6 +81,7 @@ struct Repository: Decodable {
         case negativeValue(package: String)
         case activityOutOfRange(package: String)
         case noDesktopEnvironment
+        case emptyIssueTemplate
 
         var description: String {
             switch self {
@@ -96,16 +97,20 @@ struct Repository: Decodable {
                 "package '\(package)' has a Hubbub activity outside 1 to 5."
             case .noDesktopEnvironment:
                 "no package is a desktop environment, so no distro could be released."
+            case .emptyIssueTemplate:
+                "issueTemplates has an empty entry."
             }
         }
     }
 
     private enum CodingKeys: String, CodingKey {
-        case version, packages
+        case version, packages, issueTemplates
     }
 
     /// Every package, sorted by name.
     let packages: [Package]
+    /// What an issue can say is wrong, after the package's name. Optional in the file.
+    let issueTemplates: [String]
 
     init(from decoder: any Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
@@ -115,6 +120,7 @@ struct Repository: Decodable {
         }
         packages = try container.decode([Package].self, forKey: .packages)
             .sorted { $0.name.localizedCaseInsensitiveCompare($1.name) == .orderedAscending }
+        issueTemplates = try container.decodeIfPresent([String].self, forKey: .issueTemplates) ?? ["has a bug"]
     }
 
     /// Reads a repository, and throws when it can't be decoded or a distro couldn't be built from it.
@@ -137,6 +143,9 @@ struct Repository: Decodable {
         }
         guard packages.contains(where: { $0.type == .desktopEnvironment }) else {
             throw ValidationError.noDesktopEnvironment
+        }
+        guard !issueTemplates.contains(where: \.isEmpty) else {
+            throw ValidationError.emptyIssueTemplate
         }
     }
 

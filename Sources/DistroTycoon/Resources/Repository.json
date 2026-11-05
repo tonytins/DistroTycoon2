@@ -1,5 +1,17 @@
 {
   "version": 1,
+  "issueTemplates": [
+    "crashes on startup",
+    "eats all the memory",
+    "forgets its settings",
+    "freezes when printing",
+    "draws blurry icons",
+    "won't open files with spaces in their names",
+    "has a typo in its About box",
+    "breaks after the latest update",
+    "drains the battery",
+    "ignores the keyboard layout"
+  ],
   "packages": [
     {
       "id": "chatchatchat",

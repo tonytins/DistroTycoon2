@@ -37,19 +37,20 @@ func nonsenseTimeIsIgnored(seconds: Double) {
     #expect(clock.advance(by: seconds) == 0)
 }
 
-@Test func speedButtonsAppearOnceRunningAndMarkTheSpeed() {
-    #expect(DistroTycoon.speedItems(for: .normal, isRunning: false).isEmpty)
-    let items = DistroTycoon.speedItems(for: .fast, isRunning: true)
-    #expect(items.map(\.command) == [.setSpeed(.paused), .setSpeed(.normal), .setSpeed(.fast)])
-    #expect(items.map(\.isSelected) == [false, false, true])
+@Test func statusButtonsAppearOnceRunningAndMarkWhatsOn() {
+    #expect(DistroTycoon.statusItems(for: .normal, isRunning: false, isHubbubOpen: false).isEmpty)
+    let items = DistroTycoon.statusItems(for: .fast, isRunning: true, isHubbubOpen: true)
+    #expect(items.map(\.command) == [.toggleHubbub, .setSpeed(.paused), .setSpeed(.normal), .setSpeed(.fast)])
+    #expect(items.map(\.isSelected) == [true, false, false, true])
 }
 
 @Test func pressingAStatusItemSendsItsCommand() {
     let bar = MenuBar(menus: [Menu(title: "File", hotkey: "F", items: [])], measure: { $0.count * 10 })
-    bar.statusItems = DistroTycoon.speedItems(for: .normal, isRunning: true)
+    bar.statusItems = DistroTycoon.statusItems(for: .normal, isRunning: true, isHubbubOpen: false)
     // Items are 26 wide with 2 between, ending 2 from the right edge of an 800-wide bar.
     #expect(bar.update(MenuInput(mouse: Vector2(x: 785, y: 14), isPressed: true), barWidth: 800) == .setSpeed(.fast))
     #expect(bar.tookInput)
     #expect(bar.update(MenuInput(mouse: Vector2(x: 729, y: 14), isPressed: true), barWidth: 800) == .setSpeed(.paused))
+    #expect(bar.update(MenuInput(mouse: Vector2(x: 701, y: 14), isPressed: true), barWidth: 800) == .toggleHubbub)
     #expect(bar.update(MenuInput(mouse: Vector2(x: 600, y: 14), isPressed: true), barWidth: 800) == nil)
 }

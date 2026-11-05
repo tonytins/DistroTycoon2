@@ -89,3 +89,12 @@ func activityOutsideOneToFiveIsRefused(activity: Int) {
         try Repository(data: Data("{".utf8))
     }
 }
+
+@Test func issueTemplatesAreOptionalButCantBeEmpty() throws {
+    #expect(try Repository(data: document(package())).issueTemplates == ["has a bug"])
+    let withEmpty = Data(#"{"version": 1, "issueTemplates": [""], "packages": [\#(package())]}"#.utf8)
+    #expect(throws: Repository.ValidationError.emptyIssueTemplate) {
+        try Repository(data: withEmpty)
+    }
+    #expect(try Resources.loadRepository().issueTemplates.count == 10)
+}

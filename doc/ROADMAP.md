@@ -50,11 +50,12 @@ The port from TermKit to raylib-swift and Hudini.
 - [x] A day clock and speed controls in the menu bar
 - [x] Rewrite `Repository.json` around this game's needs, with Hubbub as a preinstalled package
 - [x] A package manager app for choosing what ships, with at least one desktop environment required
-- [ ] Users, and open issues that cost users
-- [ ] A Hubbub button at the right of the menu bar, opening a pane with the project's issues
-- [ ] The player fixing one issue at a time, with fixes reaching users only through a release
-- [ ] Release cycles, in place of the system menu's temporary Release item
-- [ ] Stars that last and buzz that fades
+- [x] Users, and open issues that cost users
+- [x] A Hubbub button at the right of the menu bar, opening a pane with the project's issues
+- [x] The player fixing one issue at a time, with fixes reaching users only through a release
+- [x] Release cycles, chosen in the Hubbub pane
+- [x] Stars that last and buzz that fades
+- [ ] A balance pass. In early tests, one player keeps up with every issue, and rolling releases end with about twice the users of the other cycles
 - [ ] Random events, reworked from the classic game's
 
 ### Release cycles
@@ -69,8 +70,11 @@ How a distro releases is the player's choice, and each cycle has its own risks.
 
 A distro can switch cycles mid-game, and the switch makes news.
 
+A predictable schedule can make every fourth release an LTS, with longer support and calmer users. Kodama keeps one line of issues. Hikari lets a distro support two lines at once, the latest standard release and the latest LTS, with fixes backported from standard to LTS for less effort and point releases that carry them. Versions stay simple numbers, such as 4.0 LTS.
+
 ## Hikari: Hubbub
 
+- [ ] Supporting the latest standard and LTS releases at once, with backports and point releases
 - [ ] Contributors in the Hubbub pane, who are free and unreliable
 - [ ] Maintainers in the Hubbub pane, who are reliable and paid
 - [ ] Money in the Hubbub pane, from donations and sponsors

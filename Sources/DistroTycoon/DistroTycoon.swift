@@ -30,6 +30,7 @@ struct DistroTycoon {
         let createDistro: CreateDistroApp
         let terminal: TerminalApp
         let packageManager: PackageManagerApp
+        let hubbub: HubbubPane
         let appearance: Appearance
         do {
             fonts = Fonts(
@@ -40,6 +41,7 @@ struct DistroTycoon {
             createDistro = try CreateDistroApp(appearance: appearance)
             terminal = try TerminalApp(game: game, appearance: appearance)
             packageManager = try PackageManagerApp(game: game, appearance: appearance)
+            hubbub = try HubbubPane(game: game, appearance: appearance)
         } catch {
             CloseWindow()
             failToStart(error.localizedDescription)
@@ -68,13 +70,13 @@ struct DistroTycoon {
                 _ = notice.update()
             } else {
                 let input = MenuInput.current()
-                menuBar.statusItems = speedItems(for: clock.speed, isRunning: !distro.distroName.isEmpty)
+                menuBar.statusItems = statusItems(for: clock.speed, isRunning: !distro.distroName.isEmpty, isHubbubOpen: hubbub.isOpen)
                 switch menuBar.update(input) {
                 case .about:
-                    notice.show(title: "About \(systemName(of: distro))", message: aboutMessage(for: distro))
+                    notice.show(title: "About \(systemName(of: distro))", message: aboutMessage(for: game))
                 case .release:
                     let problem = game.releaseProblem
-                    notice.show(title: problem == nil ? "Congrats!" : "Not Yet", message: game.release())
+                    notice.show(title: problem == nil ? "Congrats!" : "Can't Release Yet", message: game.release())
                 case .quit:
                     isQuitting = true
                 case .clearLog:
@@ -83,10 +85,15 @@ struct DistroTycoon {
                     workspace.closeFocused()
                 case let .setSpeed(speed):
                     clock.speed = speed
+                case .toggleHubbub:
+                    hubbub.toggle()
                 case nil:
                     break
                 }
-                if !menuBar.tookInput, case let .nameChosen(name)? = workspace.update(mouse: input.mouse, isPressed: input.isPressed) {
+                if !menuBar.tookInput {
+                    hubbub.update(input, screenWidth: Float(GetScreenWidth()))
+                }
+                if !menuBar.tookInput, !hubbub.tookInput, case let .nameChosen(name)? = workspace.update(mouse: input.mouse, isPressed: input.isPressed) {
                     game.nameDistro(name)
                     workspace.close(namingWindow)
                     shownFocus = nil
@@ -104,12 +111,13 @@ struct DistroTycoon {
                 shownFocus = focus
                 menuBar.setMenus(menus(for: distro, focusedApp: workspace.focusedApp))
             }
-            menuBar.status = distro.distroName.isEmpty ? "" : "Day \(game.day)    \(distro.versionLabel)"
+            menuBar.status = distro.distroName.isEmpty ? "" : "Day \(game.day)    \(game.versionLabel)"
 
             BeginDrawing()
             ClearBackground(appearance.desktopBottom)
             desktop.draw()
             workspace.draw()
+            hubbub.draw(screenWidth: Float(GetScreenWidth()))
             menuBar.draw()
             if notice.isOpen {
                 DrawRectangle(0, 0, Int(GetScreenWidth()), Int(GetScreenHeight()), appearance.interface.overlay)
@@ -123,12 +131,13 @@ struct DistroTycoon {
         CloseWindow()
     }
 
-    /// The speed buttons for the menu bar, which appear once the game is running.
-    static func speedItems(for speed: GameSpeed, isRunning: Bool) -> [StatusItem] {
+    /// The menu bar's buttons, which appear once the game is running: Hubbub, then the speeds.
+    static func statusItems(for speed: GameSpeed, isRunning: Bool, isHubbubOpen: Bool) -> [StatusItem] {
         guard isRunning else {
             return []
         }
         return [
+            StatusItem(icon: .hubbub, command: .toggleHubbub, isSelected: isHubbubOpen),
             StatusItem(icon: .pause, command: .setSpeed(.paused), isSelected: speed == .paused),
             StatusItem(icon: .play, command: .setSpeed(.normal), isSelected: speed == .normal),
             StatusItem(icon: .fast, command: .setSpeed(.fast), isSelected: speed == .fast),
@@ -155,9 +164,9 @@ struct DistroTycoon {
         distro.distroName.isEmpty ? "Distro Tycoon 2" : distro.distroName
     }
 
-    private static func aboutMessage(for distro: UserDistro) -> String {
-        let game = "Built with Distro Tycoon 2, version \(GitVersion.version)."
-        return distro.distroName.isEmpty ? game : "\(distro.versionLabel). \(game)"
+    private static func aboutMessage(for game: Game) -> String {
+        let built = "Built with Distro Tycoon 2, version \(GitVersion.version)."
+        return game.distro.distroName.isEmpty ? built : "\(game.versionLabel). \(built)"
     }
 
     private static func failToStart(_ reason: String) -> Never {

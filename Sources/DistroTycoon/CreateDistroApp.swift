@@ -43,6 +43,10 @@ final class CreateDistroApp: DesktopApp {
         view.draw(at: origin)
     }
 
+    func resignFocus() {
+        view.clearFocus()
+    }
+
     /// Returns a name with its surrounding spaces removed, or `nil` when nothing else is left.
     static func cleaned(_ name: String) -> String? {
         let cleaned = name.trimmingCharacters(in: .whitespacesAndNewlines)

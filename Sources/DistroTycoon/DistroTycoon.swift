@@ -8,9 +8,11 @@ struct DistroTycoon {
         let appearance = Appearance.standard
         let game: Game
         let createDistro: CreateDistroApp
+        let terminal: TerminalApp
         do {
             game = try Game(repository: Resources.loadRepository())
             createDistro = try CreateDistroApp(appearance: appearance)
+            terminal = try TerminalApp(game: game, appearance: appearance)
         } catch {
             failToStart(error.localizedDescription)
         }
@@ -29,35 +31,55 @@ struct DistroTycoon {
         let distro = game.distro
         let menuBar = MenuBar(menus: [systemMenu(for: distro)], appearance: appearance)
         let notice = NoticePanel(theme: appearance.interface)
-        var namingWindow: DesktopWindow? = DesktopWindow(app: createDistro, appearance: appearance)
+        let namingWindow = DesktopWindow(app: createDistro, appearance: appearance)
+        let workspace = Workspace(
+            dockItems: [
+                Dock.Item(title: terminal.title, icon: .terminal, window: DesktopWindow(app: terminal, appearance: appearance)),
+            ],
+            appearance: appearance
+        )
+        workspace.open(namingWindow)
         var isQuitting = false
+        var shownFocus: String?
 
         while !isQuitting && !WindowShouldClose() {
             if notice.isOpen {
                 _ = notice.update()
             } else {
-                switch menuBar.update(.current()) {
+                let input = MenuInput.current()
+                switch menuBar.update(input) {
                 case .about:
                     notice.show(title: "About \(systemName(of: distro))", message: aboutMessage(for: distro))
                 case .release:
-                    notice.show(title: "Congrats!", message: distro.makeNewRelease())
+                    notice.show(title: "Congrats!", message: game.release())
                 case .quit:
                     isQuitting = true
+                case .clearLog:
+                    game.clearLog()
+                case .closeWindow:
+                    workspace.closeFocused()
                 case nil:
                     break
                 }
-                if !menuBar.tookInput, case let .nameChosen(name)? = namingWindow?.update() {
-                    distro.nameDistro(name: name)
-                    namingWindow = nil
-                    menuBar.setMenus([systemMenu(for: distro)])
+                if !menuBar.tookInput, case let .nameChosen(name)? = workspace.update(mouse: input.mouse, isPressed: input.isPressed) {
+                    game.nameDistro(name)
+                    workspace.close(namingWindow)
+                    shownFocus = nil
                 }
             }
-            menuBar.status = namingWindow == nil ? distro.versionLabel : ""
+            workspace.refresh()
+
+            let focus = "\(distro.distroName)/\(workspace.focusedApp?.title ?? "")"
+            if focus != shownFocus {
+                shownFocus = focus
+                menuBar.setMenus(menus(for: distro, focusedApp: workspace.focusedApp))
+            }
+            menuBar.status = distro.distroName.isEmpty ? "" : distro.versionLabel
 
             BeginDrawing()
             ClearBackground(appearance.desktopBottom)
             desktop.draw()
-            namingWindow?.draw()
+            workspace.draw()
             menuBar.draw()
             if notice.isOpen {
                 DrawRectangle(0, 0, Int(GetScreenWidth()), Int(GetScreenHeight()), appearance.interface.overlay)
@@ -67,6 +89,11 @@ struct DistroTycoon {
         }
 
         CloseWindow()
+    }
+
+    /// The system menu, followed by the focused app's menus.
+    static func menus(for distro: UserDistro, focusedApp: (any DesktopApp)?) -> [Menu] {
+        [systemMenu(for: distro)] + (focusedApp?.menus ?? [])
     }
 
     /// The menu that carries the player's distro, which is the desktop they are looking at.

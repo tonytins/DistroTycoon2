@@ -37,10 +37,10 @@ The port from TermKit to raylib-swift and Hudini.
 ### Desktop
 
 - [x] Apps with their own windows, starting with the naming window
-- [ ] Windows that take focus and come to the front, with only the focused one taking input
-- [ ] Menus that change with the focused app
-- [ ] A dock that opens and focuses apps
-- [ ] A terminal app as the event log
+- [x] Windows that take focus and come to the front, with only the focused one taking input
+- [x] Menus that change with the focused app
+- [x] A dock that opens and focuses apps
+- [x] A terminal app as the event log
 - [ ] A settings app for the distro's accent color
 
 ### Game
@@ -48,6 +48,7 @@ The port from TermKit to raylib-swift and Hudini.
 - [x] Bundle `Repository.json` and load it
 - [x] A game state with a daily update
 - [ ] A day clock and speed controls in the menu bar
+- [ ] Rewrite `Repository.json` around this game's needs
 - [ ] A package manager app for choosing what ships, with at least one desktop environment required
 - [ ] Users, and open issues that cost users
 - [ ] A Hubbub button at the right of the menu bar, opening a pane with the project's issues
@@ -66,12 +67,13 @@ How a distro releases is the player's choice, and each cycle has its own risks.
 | Predictable | Releases follow a schedule. A missed date or a breaking change makes news, especially for a long-term support release. |
 | No schedule | The classic game's way: release whenever you like. |
 
+A distro can switch cycles mid-game, and the switch makes news.
+
 ## Hikari: Hubbub
 
 - [ ] Contributors in the Hubbub pane, who are free and unreliable
 - [ ] Maintainers in the Hubbub pane, who are reliable and paid
 - [ ] Money in the Hubbub pane, from donations and sponsors
-- [ ] A Hubbub desktop app, opened from the pane
 - [ ] Twig as the flavor behind commits and tags
 
 ## Nozomi: rivals
@@ -83,6 +85,7 @@ How a distro releases is the player's choice, and each cycle has its own risks.
 ## Later
 
 - Saved games
+- A Hubbub desktop app, opened from the pane
 - Reviewing pull requests, where a bad merge adds bugs
 - Scenarios
 

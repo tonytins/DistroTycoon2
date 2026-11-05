@@ -13,15 +13,41 @@ protocol DesktopApp: AnyObject {
     var contentSize: Vector2 { get }
     /// Whether the player can close the window.
     var isClosable: Bool { get }
+    /// The menus the menu bar shows while this app has focus.
+    var menus: [Menu] { get }
 
-    /// Handles this frame's input with the content's corner at `origin`.
+    /// Catches up with the game. This runs every frame the window is open, with or without focus.
+    func refresh()
+    /// Handles this frame's input with the content's corner at `origin`. Only the focused app gets this.
     func update(at origin: Vector2) -> AppAction?
     func draw(at origin: Vector2)
+    /// Gives up keyboard focus, because another window took focus or this one closed.
+    func resignFocus()
+}
+
+extension DesktopApp {
+    var menus: [Menu] {
+        []
+    }
+
+    func refresh() {}
+
+    func resignFocus() {}
 }
 
 /// A movable window on the desktop, holding one app.
-final class DesktopWindow {
-    private let app: any DesktopApp
+final class DesktopWindow: StackedWindow {
+    /// What a window's input asks the desktop to act on.
+    enum Update: Equatable {
+        case close
+        case action(AppAction)
+    }
+
+    // How much of a background window's color gives way to white, as early Aqua fades its background windows.
+    private static let backgroundFade: Float = 0.35
+
+    let app: any DesktopApp
+
     private let frame: WindowFrame
     private let size: Vector2
 
@@ -32,20 +58,35 @@ final class DesktopWindow {
         size = Vector2(x: app.contentSize.x, y: app.contentSize.y + Float(WindowFrame.titleHeight))
     }
 
-    /// Handles this frame's input and returns what the app asked for, if anything.
-    func update() -> AppAction? {
+    /// Handles this frame's input. Without `contentTakesInput`, the window can still start being
+    /// dragged, but its close button and its app don't see the press.
+    func update(contentTakesInput: Bool) -> Update? {
         let bounds = bounds
-        if frame.followPointer(in: bounds) {
+        if frame.followPointer(in: bounds) || !contentTakesInput {
             return nil
         }
-        return app.update(at: Self.origin(in: bounds))
+        if frame.update(in: bounds) == .close {
+            return .close
+        }
+        return app.update(at: Self.origin(in: bounds)).map(Update.action)
     }
 
     /// Draws the window. Draw the menu bar after it.
-    func draw() {
+    func draw(isFocused: Bool) {
         let bounds = bounds
         frame.draw(in: bounds)
         app.draw(at: Self.origin(in: bounds))
+        if !isFocused {
+            DrawRectangleRec(bounds, ColorAlpha(Color(r: 255, g: 255, b: 255, a: 255), Self.backgroundFade))
+        }
+    }
+
+    func contains(_ point: Vector2) -> Bool {
+        CheckCollisionPointRec(point, bounds)
+    }
+
+    func resignFocus() {
+        app.resignFocus()
     }
 
     // Centered until moved. The frame only keeps itself on screen, so this also keeps its title

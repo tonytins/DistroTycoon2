@@ -6,6 +6,8 @@ enum MenuCommand: Equatable {
     case about
     case release
     case quit
+    case clearLog
+    case closeWindow
 }
 
 /// A choice in a drop-down menu. `hotkey` is the letter that picks it while the menu is open.

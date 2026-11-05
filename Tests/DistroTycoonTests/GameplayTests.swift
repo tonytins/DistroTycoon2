@@ -11,16 +11,47 @@ private struct SeededGenerator: RandomNumberGenerator {
     }
 }
 
-@Test func eachDayCountsUpAndReportsWhatHappened() throws {
-    let game = Game(repository: try Resources.loadRepository())
+private func makeGame() throws -> Game {
+    try Game(repository: Resources.loadRepository())
+}
+
+@Test func eachDayCountsUpAndLogsWhatHappened() throws {
+    let game = try makeGame()
     var generator = SeededGenerator(state: 2000)
-    var messages = 0
-    for day in 1 ... 5000 {
-        messages += game.advanceDay(using: &generator).count
+    for day in 1 ... 400 {
+        game.advanceDay(using: &generator)
         #expect(game.day == day)
     }
-    #expect(messages > 0)
-    #expect(game.distro.hype == messages * 5)
+    #expect(!game.log.isEmpty)
+    #expect(game.distro.hype == game.log.count * 5)
+    #expect(game.log[0].hasPrefix("[Day "))
+}
+
+@Test func namingAndReleasingAreLogged() throws {
+    let game = try makeGame()
+    game.nameDistro("Tuxedo")
+    #expect(game.log == ["[Day 0] Started work on Tuxedo."])
+    let message = game.release()
+    #expect(game.log.last == "[Day 0] \(message)")
+}
+
+@Test func theLogKeepsOnlyItsNewestEntries() throws {
+    let game = try makeGame()
+    game.nameDistro("Tuxedo")
+    for _ in 1 ... 600 {
+        _ = game.release()
+    }
+    #expect(game.log.count == 500)
+    #expect(game.log.last?.contains("600.0 of Tuxedo") == true)
+}
+
+@Test func clearingTheLogIsNoticedByItsRevision() throws {
+    let game = try makeGame()
+    game.nameDistro("Tuxedo")
+    let revision = game.logRevision
+    game.clearLog()
+    #expect(game.log.isEmpty)
+    #expect(game.logRevision != revision)
 }
 
 @Test func aNewDistroIsUnreleasedAndEachReleaseCountsUp() {

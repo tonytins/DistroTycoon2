@@ -1,17 +1,51 @@
 /// Everything the simulation knows. It has no interface, so tests can run it without a window.
 final class Game {
+    private static let logLimit = 500
+
     let repository: Repository
     let distro = UserDistro()
     private(set) var day = 0
+    /// What has happened, oldest first. Only the newest entries are kept.
+    private(set) var log: [String] = []
+    /// Changes whenever `log` does, so an interface can tell cheaply that it should catch up.
+    private(set) var logRevision = 0
 
     init(repository: Repository) {
         self.repository = repository
     }
 
-    /// Moves the game on by one day and returns what the player should be told.
-    func advanceDay(using generator: inout some RandomNumberGenerator) -> [String] {
+    /// Moves the game on by one day.
+    func advanceDay(using generator: inout some RandomNumberGenerator) {
         day += 1
-        return [chanceCard(distro: distro, using: &generator)].compactMap(\.self)
+        if let message = chanceCard(distro: distro, using: &generator) {
+            record(message)
+        }
+    }
+
+    /// Names the distro and notes that its project has started.
+    func nameDistro(_ name: String) {
+        distro.nameDistro(name: name)
+        record("Started work on \(name).")
+    }
+
+    /// Releases the distro's next version and returns the message to show the player.
+    func release() -> String {
+        let message = distro.makeNewRelease()
+        record(message)
+        return message
+    }
+
+    func clearLog() {
+        log.removeAll()
+        logRevision += 1
+    }
+
+    private func record(_ message: String) {
+        log.append("[Day \(day)] \(message)")
+        if log.count > Self.logLimit {
+            log.removeFirst(log.count - Self.logLimit)
+        }
+        logRevision += 1
     }
 }
 

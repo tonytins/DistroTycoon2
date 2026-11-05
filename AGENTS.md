@@ -9,10 +9,9 @@ menu, in a Frutiger Aero style with a homage to early Aqua. See [the roadmap](do
 where it's going.
 
 - `Sources/DistroTycoon` holds the game: its rules, its screens, and the main loop.
-- `Sources/DistroTycoon/Resources` holds the UIScript documents the game bundles.
+- `Sources/DistroTycoon/Resources` holds everything the game bundles, such as UIScript documents and
+  the fictional packages in `Repository.json`. Declare each new file in `Package.swift`.
 - `Tests/DistroTycoonTests` covers game rules and input handling.
-- `Repository.json` holds the fictional packages. It sits at the repository root and nothing loads
-  it yet.
 
 ## Build and test
 
@@ -36,6 +35,7 @@ where it's going.
 - Take colors from `Appearance`, which works them out from the player's accent color. Leave colors
   out of UIScript documents so they follow it. Use font sizes in multiples of 10, which keep raylib's
   default font sharp.
+- A desktop app conforms to `DesktopApp`, and `DesktopWindow` gives it a frame.
 - Let the menu bar take input first. When `MenuBar.tookInput` is true, nothing under it should act
   on that frame's input.
 - Keep a control specific to this game in this repository. When Hudini is missing something

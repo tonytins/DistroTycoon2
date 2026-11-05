@@ -10,5 +10,5 @@ import Testing
 
 @Test(arguments: zip(["Tuxedo", "  Tuxedo Linux ", "", "   "], ["Tuxedo", "Tuxedo Linux", nil, nil]))
 func namesAreTrimmedAndBlankOnesRefused(name: String, expected: String?) {
-    #expect(CreateDistroWindow.cleaned(name) == expected)
+    #expect(CreateDistroApp.cleaned(name) == expected)
 }

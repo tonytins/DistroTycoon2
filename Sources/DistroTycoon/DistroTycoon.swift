@@ -6,9 +6,11 @@ import Raylib
 struct DistroTycoon {
     static func main() {
         let appearance = Appearance.standard
-        let createWindow: CreateDistroWindow
+        let game: Game
+        let createDistro: CreateDistroApp
         do {
-            createWindow = try CreateDistroWindow(appearance: appearance)
+            game = try Game(repository: Resources.loadRepository())
+            createDistro = try CreateDistroApp(appearance: appearance)
         } catch {
             failToStart(error.localizedDescription)
         }
@@ -24,10 +26,10 @@ struct DistroTycoon {
         SetExitKey(.null)
 
         let desktop = Desktop(appearance: appearance)
-        let distro = UserDistro()
+        let distro = game.distro
         let menuBar = MenuBar(menus: [systemMenu(for: distro)], appearance: appearance)
         let notice = NoticePanel(theme: appearance.interface)
-        var openCreateWindow: CreateDistroWindow? = createWindow
+        var namingWindow: DesktopWindow? = DesktopWindow(app: createDistro, appearance: appearance)
         var isQuitting = false
 
         while !isQuitting && !WindowShouldClose() {
@@ -44,18 +46,18 @@ struct DistroTycoon {
                 case nil:
                     break
                 }
-                if !menuBar.tookInput, let name = openCreateWindow?.update() {
+                if !menuBar.tookInput, case let .nameChosen(name)? = namingWindow?.update() {
                     distro.nameDistro(name: name)
-                    openCreateWindow = nil
+                    namingWindow = nil
                     menuBar.setMenus([systemMenu(for: distro)])
                 }
             }
-            menuBar.status = openCreateWindow == nil ? distro.versionLabel : ""
+            menuBar.status = namingWindow == nil ? distro.versionLabel : ""
 
             BeginDrawing()
             ClearBackground(appearance.desktopBottom)
             desktop.draw()
-            openCreateWindow?.draw()
+            namingWindow?.draw()
             menuBar.draw()
             if notice.isOpen {
                 DrawRectangle(0, 0, Int(GetScreenWidth()), Int(GetScreenHeight()), appearance.interface.overlay)

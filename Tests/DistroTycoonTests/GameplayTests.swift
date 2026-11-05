@@ -11,6 +11,18 @@ private struct SeededGenerator: RandomNumberGenerator {
     }
 }
 
+@Test func eachDayCountsUpAndReportsWhatHappened() throws {
+    let game = Game(repository: try Resources.loadRepository())
+    var generator = SeededGenerator(state: 2000)
+    var messages = 0
+    for day in 1 ... 5000 {
+        messages += game.advanceDay(using: &generator).count
+        #expect(game.day == day)
+    }
+    #expect(messages > 0)
+    #expect(game.distro.hype == messages * 5)
+}
+
 @Test func aNewDistroIsUnreleasedAndEachReleaseCountsUp() {
     let distro = UserDistro()
     distro.nameDistro(name: "Tuxedo")

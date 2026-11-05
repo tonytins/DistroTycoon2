@@ -1,21 +1,17 @@
-import Foundation
+/// Everything the simulation knows. It has no interface, so tests can run it without a window.
+final class Game {
+    let repository: Repository
+    let distro = UserDistro()
+    private(set) var day = 0
 
-class Gameplay {
-    var timeUpdate: Int = 0
-    var timeRank: Int = 0
-    var gameSpeed: Int = 0
-    var week: Int = 0
-    var year: Int = 0
+    init(repository: Repository) {
+        self.repository = repository
+    }
 
-    func gameTime(date: Date) {
-        let calendar = Calendar.current
-
-        let hour = calendar.component(.hour, from: date)
-        let min = calendar.component(.minute, from: date)
-        let sec = calendar.component(.second, from: date)
-
-        var cycle = (hour % 2 == 1) ? 3600 : 0
-        cycle += min * 60 + sec
+    /// Moves the game on by one day and returns what the player should be told.
+    func advanceDay(using generator: inout some RandomNumberGenerator) -> [String] {
+        day += 1
+        return [chanceCard(distro: distro, using: &generator)].compactMap(\.self)
     }
 }
 

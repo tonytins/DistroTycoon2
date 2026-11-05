@@ -25,6 +25,7 @@ let package = Package(
             ],
             resources: [
                 .copy("Resources/createdistro.xml"),
+                .copy("Resources/Repository.json"),
             ],
             plugins: [
                 .plugin(name: "GitVersionPlugin", package: "GitVersion"),
